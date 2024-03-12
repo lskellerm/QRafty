@@ -15,11 +15,12 @@ Backend API built using Python and [FastAPI](https://fastapi.tiangolo.com/) and 
 
 ## Technologies Used
 - Vue & Nuxt 3
-- TailwindCSS
+- [TailwindCSS](https://tailwindcss.com/)
 - TypeScript
 - Eslint
 - Python
-- Flask
 - FastAPI
-- Pydantic
-- Ruff
+- qrcode
+- [Pydantic](https://docs.pydantic.dev/latest/)
+- [Ruff](https://docs.astral.sh/ruff/)
+- [mypy](https://mypy-lang.org/)
