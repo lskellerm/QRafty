@@ -9,3 +9,14 @@ This monorepo contains the source code to the entire application, consisting of 
 		- Front end which is built using [Vue.js](https://vuejs.org/) & and the [Nuxt.js](https://nuxt.com/) SSR Framework, utilizing [TypeScript](https://www.typescriptlang.org/) for strong typing, Maintainability and Scalability
 - `/backend`
 		- Backend API built using Python and [FastAPI](https://fastapi.tiangolo.com/) and the [qrcode](https://pypi.org/project/qrcode/) python library for creating customizable QR Codes on the server.
+
+## Technologies Used
+- Vue & Nuxt 3
+- TailwindCSS
+- TypeScript
+- Eslint
+- Python
+- Flask
+- FastAPI
+- Pydantic
+- Ruff
