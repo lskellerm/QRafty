@@ -23,4 +23,4 @@ Backend API built using Python and [FastAPI](https://fastapi.tiangolo.com/) and 
 - qrcode
 - [Pydantic](https://docs.pydantic.dev/latest/)
 - [Ruff](https://docs.astral.sh/ruff/)
-- [mypy](https://mypy-lang.org/)
+- [pyright](https://microsoft.github.io/pyright/#/)
