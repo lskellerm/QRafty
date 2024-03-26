@@ -20,21 +20,37 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - dev-db
     environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/qrafty
+      - DATABASE_URL=postgresql://postgres-dev-user:password@db:5432/qrafty_dev_db
       - PYTHONUNBUFFERED=1
 
-  db:
+  dev-db: 
     image: postgres:latest
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_dev_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=postgres-dev-user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=qrafty
+      - POSTGRES_DB=qrafty_dev_db
     ports:
       - "5432:5432"
+    expose:
+      - "5432"
+
+  test-db: 
+    image: postgres:latest
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data:cached
+    environment:
+      - POSTGRES_USER=postgres-test-user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=qrafty_test_db
+    ports:
+      - "5434:5434"
+    expose:
+      - "5434"
 
 volumes:
-  postgres_data:
+  postgres_dev_data:
+  postgres_test_data:
