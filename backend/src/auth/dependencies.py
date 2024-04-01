@@ -26,7 +26,7 @@ async def get_user_db(  # type: ignore
 
 async def get_user_manager(user_db=Depends(get_user_db)):  # type: ignore
     """
-    Dependency that creates the UserManager instance for the User model, which will later be injecteed at runtime
+    Dependency that creates the UserManager instance for the User model, which will later be injected at runtime
 
     Args:
         user_db (SQLAlchemyUserDatabase[User], optional): User database adapter, injected by the get_user_db dependency. Defaults to Depends(get_user_db).
