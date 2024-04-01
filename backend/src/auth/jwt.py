@@ -1,7 +1,7 @@
 """Module containing the JWT token generation and verification functions."""
 
 from fastapi_users.authentication import JWTStrategy
-from .config import SECRET_KEY, JWT_ALGORITHM, JWT_LIFETIME_SECONDS
+from src.auth.config import SECRET_KEY, JWT_ALGORITHM, JWT_LIFETIME_SECONDS
 
 
 def get_jwt_strategy() -> JWTStrategy:  # type: ignore

@@ -2,8 +2,8 @@
 
 import uuid
 from fastapi_users import BaseUserManager, UUIDIDMixin
-from .models import User
-from .config import SECRET
+from src.auth.models import User
+from src.auth.config import SECRET_KEY
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
@@ -16,7 +16,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         BaseUserManager (BaseUserManager): BaseUserManager class from fastapi_users
     """
 
-    reset_pasword_token_secret = SECRET
-    verification_token_secret = SECRET
+    reset_pasword_token_secret = SECRET_KEY
+    verification_token_secret = SECRET_KEY
 
     # TODO: Implement custom business logic for the UserManager
