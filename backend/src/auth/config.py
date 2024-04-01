@@ -1,6 +1,6 @@
 """Auth and User Management specific configuration"""
 
-from ..config import settings
+from src.config import settings
 
 SECRET_KEY = settings.SECRET_KEY
 JWT_ALGORITHM: str = "HS256"
