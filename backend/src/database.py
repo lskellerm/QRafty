@@ -1,4 +1,4 @@
-from .config import settings
+from src.config import settings
 from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
@@ -25,13 +25,13 @@ async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     """
-    Dependency that creates a new session and then yields it
+        Dependency that creates a new session and then yields it
 
-    Returns:
-        AsyncGenerator[AsyncSession, None]: A fresh SQLAlchemy session to interact with the database
-
-    Yields:
-        Iterator[AsyncGenerator[AsyncSession, None]]: A new async session
+        Returns:
+            AsyncGenerator[AsyncSession, None]: A fresh SQLAlchemy session to interact with the database
+    a
+        Yields:
+            Iterator[AsyncGenerator[AsyncSession, None]]: A new async session
     """
     async with async_session_maker() as session:
         yield session
