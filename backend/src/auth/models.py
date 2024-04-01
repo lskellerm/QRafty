@@ -3,7 +3,7 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 from fastapi_users.db import SQLAlchemyBaseUserTableUUID
-from ..database import Base
+from src.database import Base
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
