@@ -20,7 +20,7 @@ class UserRead(schemas.BaseUser[uuid.UUID]):
 class UserCreate(schemas.BaseUserCreate):
     """
     Pydantic model for creating User data, dedicated to User registration,
-    consisting of mandatory password email and password field
+    consisting of mandatory password email and password field.
 
     Args:
         schemas (BaseUserCreate): FastAPI_Users BaseUserCreate Pydantic model provided as a mixin
