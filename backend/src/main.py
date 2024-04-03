@@ -22,13 +22,13 @@ fasapi_config: dict[str, Any] = {
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    Context manager that starts the application and closes it when done
+    Context manager that starts the application and closes it when done, to be used with FastAPI lifespan events (startup and shutdown)
 
     Args:
         app (FastAPI): The FastAPI application
 
     Yields:
-        Iterator[FastAPI]: The FastAPI application
+        Iterator[FastAPI]: The FastAPI application, which is closed after the context manager is done
     """
     yield
 
