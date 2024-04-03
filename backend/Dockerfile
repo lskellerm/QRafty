@@ -10,7 +10,8 @@ COPY . .
 
 EXPOSE 8000
 
-# Keeps the container running
-
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Keeps the container running, used for initially setting up dev environment in container
 ENTRYPOINT ["tail", "-f", "/dev/null"]    
+
+# Remove when ready to continously run the FastAPI app
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
