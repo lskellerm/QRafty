@@ -4,9 +4,8 @@ import uuid
 import re
 from typing import Annotated, Union, Optional
 
-from fastapi import Depends, HTTPException, Request
+from fastapi import HTTPException, Request
 from fastapi_users import BaseUserManager, UUIDIDMixin, InvalidPasswordException
-from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from fastapi_users import schemas  # imported for type hinting
 
 
