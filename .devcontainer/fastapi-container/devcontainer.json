@@ -21,7 +21,8 @@
             "njpwerner.autodocstring",
             "eamodio.gitlens",
             "Cameron.vscode-pytest",
-            "LittleFoxTeam.vscode-python-test-adapter"
+            "LittleFoxTeam.vscode-python-test-adapter",
+            "tommorris.mako"
         ]
       }
     }
