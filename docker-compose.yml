@@ -1,4 +1,5 @@
 version: '3'
+name: qrafty
 services:
   # frontend:
   #   build:
@@ -23,6 +24,7 @@ services:
       - "8000:8000"
     depends_on:
       - dev-db
+      - test-db
     env_file:
       - .env
     environment:
@@ -46,9 +48,24 @@ services:
     expose:
       - "5432"
 
+  test-db:
+    image: postgres:latest
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_TEST_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_TEST_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_TEST_DB}
+    ports:
+      - "5433:5432"
+    expose:
+      - "5432"
+
   pgadmin:
     container_name: pgadmin
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
@@ -56,20 +73,7 @@ services:
       - "8080:8080"
     depends_on:
       - dev-db
-  # test-db:
-  #   image: postgres:latest
-  #   volumes:
-  #     - postgres_test_data:/var/lib/postgresql/data:cached
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - POSTGRES_USER=${POSTGRES_TEST_DB}
-  #     - POSTGRES_PASSWORD=${POSTGRES_TEST_PASSWORD}
-  #     - POSTGRES_DB=${POSTGRES_TEST_DB}
-  #   ports:
-  #     - "5434:5434"
-  #   expose:
-  #     - "5434"
+      - test-db
 
 volumes:
   postgres_dev_data:
