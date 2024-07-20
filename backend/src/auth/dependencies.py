@@ -8,6 +8,7 @@ from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql import Select
 from sqlalchemy import select
 
 from src.database import get_async_session
@@ -26,7 +27,9 @@ class CustomSQLAlchemyUserDatabase(SQLAlchemyUserDatabase[User, UUID]):
     """
 
     async def get_by_username(self, username: str) -> User | None:
-        statement = select(self.user_table).where(self.user_table.username == username)
+        statement: Select[tuple[User]] = select(self.user_table).where(
+            self.user_table.username == username
+        )
         return await self._get_user(statement)  # type: ignore
 
 
