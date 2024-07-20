@@ -1,0 +1,17 @@
+# Pinned dependencies for production
+fastapi==0.111.1
+fastapi-users==13.0.0
+fastapi-users-db-sqlalchemy==6.0.1
+email_validator==2.1.1 # Specfici version compatible with fastapi-users
+
+asgi-lifespan==2.1.0
+
+httpx==0.27.0
+uvicorn==0.30.1
+
+sqlalchemy==2.0.31
+asyncpg==0.29.0
+
+
+pydantic-settings
+pydantic-extra-types
