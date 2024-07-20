@@ -12,7 +12,6 @@ from src.config import settings
 ENVIRONMENT = settings.ENVIRONMENT
 SHOW_DOCS_ENVIRONMENTS = settings.SHOW_DOCS_ENVIRONMENTS
 
-
 fasapi_config: dict[str, Any] = {
     "title": "QRafty API",
     "summary": "API to provide functionality for the QRafty Front-End application",
@@ -34,7 +33,9 @@ async def lifespan(app: FastAPI):
 
 
 if ENVIRONMENT not in SHOW_DOCS_ENVIRONMENTS:
-    fasapi_config["openapi_url"] = None  # sets the url for docs as null
+    fasapi_config["openapi_url"] = (
+        None  # sets the url for docs as null, that is to hide the swagger docs
+    )
 
 
 app = FastAPI(lifespan=lifespan, **fasapi_config)
