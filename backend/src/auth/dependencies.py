@@ -27,6 +27,15 @@ class CustomSQLAlchemyUserDatabase(SQLAlchemyUserDatabase[User, UUID]):
     """
 
     async def get_by_username(self, username: str) -> User | None:
+        """
+        Get a user by their username
+
+        Args:
+            username (str): The username of the user to retrieve
+
+        Returns:
+            User | None: The user with the given username, or None if no user is found
+        """
         statement: Select[tuple[User]] = select(self.user_table).where(
             self.user_table.username == username
         )
