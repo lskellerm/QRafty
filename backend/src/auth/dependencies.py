@@ -36,9 +36,7 @@ class CustomSQLAlchemyUserDatabase(SQLAlchemyUserDatabase[User, UUID]):
         Returns:
             User | None: The user with the given username, or None if no user is found
         """
-        statement: Select[tuple[User]] = select(self.user_table).where(
-            self.user_table.username == username
-        )
+        statement: Select[tuple[User]] = select(User).where(User.username == username)
         return await self._get_user(statement)  # type: ignore
 
 
@@ -58,7 +56,7 @@ async def get_user_db(
 
 
 async def get_user_manager(
-    user_db: Annotated[SQLAlchemyUserDatabase[User, UUID], Depends(get_user_db)],
+    user_db: Annotated[CustomSQLAlchemyUserDatabase, Depends(get_user_db)],
 ):
     """
     Dependency that creates the UserManager instance for the User model, which will later be injected at runtime
