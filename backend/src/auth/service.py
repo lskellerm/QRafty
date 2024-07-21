@@ -52,6 +52,15 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
                 reason="Password should be at least 8 characters long, contain at least one uppercase letter, one digit and one special character"
             )
 
+        # Check that the User's password does not contain their email, username, or name
+        if any(
+            keyword.lower() in password.lower()
+            for keyword in [user.email, user.username, user.name]
+        ):
+            raise InvalidPasswordException(
+                reason="Password should not contain your email, username or name for security reasons"
+            )
+
     async def create(
         self,
         user_create: Annotated[schemas.UC, "UserCreate schema for FastAPIUsers"],
