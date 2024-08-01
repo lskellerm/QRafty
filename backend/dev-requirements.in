@@ -5,5 +5,5 @@ ruff
 pytest
 pytest-asyncio
 coverage
-pip-review
+pip     
 alembic
