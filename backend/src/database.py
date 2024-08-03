@@ -21,7 +21,11 @@ class Base(DeclarativeBase):
 
 # Create the async engine and the async session maker, expire_on_commit is set to False to avoid session expiration
 engine = create_async_engine(SQL_ALCHEMY_DATABASE_URL)
-async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+async_session_maker = async_sessionmaker(
+    engine,
+    expire_on_commit=False,
+    autocommit=False,  # autocommit is set to False to allow for transactions
+)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
