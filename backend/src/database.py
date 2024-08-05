@@ -24,7 +24,7 @@ engine = create_async_engine(SQL_ALCHEMY_DATABASE_URL)
 async_session_maker = async_sessionmaker(
     engine,
     expire_on_commit=False,
-    autocommit=False,  # autocommit is set to False to allow for transactions
+    autocommit=False,  # autocommit is set to False to allow for fine-grained control over transactions
 )
 
 
