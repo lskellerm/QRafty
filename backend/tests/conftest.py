@@ -9,12 +9,12 @@ from asgi_lifespan import LifespanManager
 
 from httpx import ASGITransport, AsyncClient
 
+from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
     async_sessionmaker,
     AsyncSession,
     AsyncEngine,
-    AsyncTransaction,
 )
 
 from src.main import app as test_app
@@ -29,16 +29,12 @@ async def async_db_engine() -> AsyncGenerator[AsyncEngine, None]:
     """
     Fixture which creates a new async database engine for testing
 
-    Returns:
-        AsyncGenerator[AsyncSession, None]: The newly created database engine
-
     Yields:
-        Iterator[AsyncGenerator[AsyncSession, None]]: New database engine for testing, yielded to the tests after the scope of the session
+        Iterator[AsyncGenerator[AsyncEngine, None]]: New database engine for testing, to be bounded to the async session used by tests
     """
-    engine = create_async_engine(TEST_DATABASE_URL)
-
-    if not engine:
-        raise Exception("Engine not created")
+    # poolclass is set to NullPool to allow for multiple event loops (asyncio and pytest-asyncio) to share the same AsyncEngine
+    # see https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html#using-multiple-asyncio-event-loops
+    engine = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool)
     yield engine
 
 
@@ -47,40 +43,27 @@ async def async_db_session(
     async_db_engine: AsyncEngine,
 ) -> AsyncGenerator[AsyncSession, None]:
     """
-    Fixture which creates a new database session for testing, binding the session to an existing transaction,
-    ensuring that the session is rolled back after each test is completed.
-
-    Returns:
-        AsyncGenerator[AsyncClient, None]: The Async database session for testing
+    Fixture which creates a new database session for testing, binding the session to the async database engine,
+    and starting a new transaction for each test, ensuring that the database is in a clean state for each test.
 
     Yields:
-        Iterator[AsyncGenerator[AsyncClient, None]]: The Async database session for testing
+        Iterator[AsyncGenerator[AsyncSession, None]]: The Async database session to be used by each unit test, explcitly starting a new transaction and rolling it back after each test
     """
+    # Start an asnyc connection with the database engine
     async with async_db_engine.connect() as connection:
-        # Start a new non-ORM transaction
-        transaction: AsyncTransaction = await connection.begin()
+        # Begin a new transaction for each test, which ensures that each test is isolated from the others
+        transaction = await connection.begin()
 
-        try:
-            # Bind a new AsyncSession to the newly created AsyncTransaction
-            async_session = async_sessionmaker(
-                bind=connection, expire_on_commit=False, class_=AsyncSession
-            )
+        # Create the async session to be yielded to the tests, binding it to the connection
+        async_session = async_sessionmaker(
+            bind=connection, expire_on_commit=False, class_=AsyncSession
+        )
 
-            # Yield the new AsyncSession to the tests
-            async with async_session() as session:
-                yield session
+        async with async_session() as session:
+            yield session
 
-                # Rollback any changes made within the same transaction context after the tests finish
-                await transaction.rollback()
-
-        except Exception as e:
-            # Rollback any changes made within the same transaction context if an exception occurs, ensuring transactions are rolled back regardless
+            # Finally, rollback the transaction that was started for the each test
             await transaction.rollback()
-            raise e
-
-        # Close the transaction after the tests are done
-        finally:
-            await transaction.close()
 
 
 @pytest_asyncio.fixture(scope="session")  # type: ignore
@@ -90,7 +73,7 @@ async def app() -> AsyncGenerator[FastAPI, None]:
     utilizing the asgi_lifespan LifespanManager for managing the lifespan of the application
 
     Yields:
-        test_app: FastAPI application for testing
+        test_app: FastAPI application for testing, using the LifespanManager to manage the lifespan of the application, ensuring that the event loop is closed after the tests are done
     """
     async with LifespanManager(test_app):
         print("The app is now running for testing")
@@ -109,11 +92,8 @@ async def client(
     Args:
         app (FastAPI): The FastAPI application
 
-    Returns:
-        AsyncGenerator[AsyncClient, None]: The Async client for testing
-
     Yields:
-        Iterator[AsyncGenerator[AsyncClient, None]]: The Async client for testing
+        Iterator[AsyncGenerator[AsyncClient, None]]: The Async client to be used for making asynchronous requests in unit tests
     """
     # Override the get_async_session dependency with the db_session fixture
     test_app.dependency_overrides[get_async_session] = lambda: async_db_session
