@@ -33,7 +33,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         user: Union[UserCreate, User],
     ) -> None:
         """
-        Validate the password for a user.
+        Validate the password for a user, overriding the default password validation method of the BaseUserManager class
 
         Args:
             password (str): Password to validate
@@ -68,7 +68,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         request: Optional[Request] = None,
     ) -> User:
         """
-        Create a new user in the database.
+        Create a new user in the database, checking to ensure that the username is unique
 
         Args:
             user_create (UserCreate): UserCreate object with the user's data
