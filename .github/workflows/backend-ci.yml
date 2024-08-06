@@ -28,8 +28,9 @@ on:
 permissions:
     contents: read
 env: 
-    ENVIRONMENT: testing
+    ENVIRONMENT: testing        
     TEST_DATABASE_URL: ${{secrets.TEST_DATABASE_URL}}
+    DEV_DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
 jobs:
     # Build the application
     build:
