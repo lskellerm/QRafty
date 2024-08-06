@@ -1,4 +1,4 @@
-name: Continous Integration for Backend Application
+name: Backend CI 
 
 on:
     push:
@@ -14,7 +14,7 @@ on:
             - '**.ini'
             - '**.coveragerc'
     pull_request:
-        branches:
+        branches:     
             - main
             - dev
             - 'feature/*'
@@ -52,14 +52,15 @@ jobs:
                     --health-retries 5
         defaults:
             run:
-                working-directory: backend
+                working-directory: backend/
         steps:       
             - name: Checkout the code
               uses: actions/checkout@v4
               with:
-                    sparse-checkout: 
+                    sparse-checkout-cone-mode: 
+                    sparse-checkout: |  
                         .github/workflows/backend-ci.yml
-                        backend
+                        backend/
             - name: Set up python
               uses: actions/setup-python@v5
               with:
