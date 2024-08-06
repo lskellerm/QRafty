@@ -1,8 +1,8 @@
 FROM node:21
 
-WORKDIR /frontend
+WORKDIR /workspace
 
-COPY package*.json ./
+COPY package.json ./
 COPY yarn.lock ./                                               
 
 RUN yarn install

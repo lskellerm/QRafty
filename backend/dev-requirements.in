@@ -1,0 +1,9 @@
+# The following requirments are for development and testing only, not for production
+-r requirements.in
+uv
+ruff
+pytest
+pytest-asyncio
+coverage
+pip     
+alembic
