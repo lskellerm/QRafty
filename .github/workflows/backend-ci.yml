@@ -84,7 +84,7 @@ jobs:
             - name: Run Alembic migrations
               run: |            
                 alembic upgrade head
-            - name: Test with Pytest & Coverage # tests will fail if branch coverage is less than 95%
+            - name: Test with Pytest & Coverage # Workflow will fail if branch coverage is less than 95%
               run: |
                 coverage run -m pytest
                 coverage  report --fail-under=95
