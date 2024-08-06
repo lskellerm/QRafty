@@ -1,7 +1,7 @@
 """Global Settings module for the application."""
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from Typing import Optional
+from typing import Optional
 
 
 class Settings(BaseSettings):
