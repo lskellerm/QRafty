@@ -62,7 +62,6 @@ jobs:
                         backend
             - name: Print the current directory and directory contents
               run: |
-                    pwd
                     ls -a 
             # - name: Set up python
             #   uses: actions/setup-python@v5
