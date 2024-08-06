@@ -49,12 +49,15 @@ jobs:
                     --health-cmd pg_isready
                     --health-interval 10s
                     --health-timeout 5s
-                    --health-retries 5  
-        steps:          
+                    --health-retries 5
+        defaults:
+            run:
+                working-directory: ./backend
+        steps:       
             - name: Checkout the code
               uses: actions/checkout@v4
               with:
-                    sparse-checkout: |
+                    sparse-checkout: 
                         .github/workflows/backend-ci.yml
                         backend
             - name: Set up python
@@ -77,9 +80,8 @@ jobs:
                 ruff format
               continue-on-error: True
             - name: Run Alembic migrations
-              run: |
+              run: |            
                 alembic upgrade head
-              working-directory: ./backend
             - name: Test with Pytest & Coverage # tests will fail if branch coverage is less than 95%
               run: |
                 coverage run -m pytest
