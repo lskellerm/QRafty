@@ -8,7 +8,7 @@
   "forwardPorts": [
     3000
   ],
-  "postCreateCommand": "echo 'Nuxt Environment setup complete. Happy coding!'",
+  "postCreateCommand": "git config --global --add safe.directory /workspace && echo 'Nuxt Environment setup complete. Happy coding!'",
   "shutdownAction": "none",
   "remoteUser": "root",
   "customizations": {
