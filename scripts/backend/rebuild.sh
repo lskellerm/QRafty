@@ -4,12 +4,12 @@
 cd ../../backend/
 
 # Build the docker image
-docker build -t qrafty-backend:latest .
+docker build --target dev -t qrafty-backend:latest .
 
 
-# Stop and remove the existing container
-docker stop qrafty-backend-1
-docker rm qrafty-backend-1
+# Stop and remove the existing container if it exists
+docker stop qrafty-backend-1 2>/dev/null || true
+docker rm qrafty-backend-1 2>/dev/null || true
 
 # Clean up and remove dangling image from the previous build
 docker image prune -f 

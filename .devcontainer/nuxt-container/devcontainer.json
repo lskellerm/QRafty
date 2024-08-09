@@ -1,9 +1,13 @@
 {
   "name": "Nuxt.js Dev Container",
-  "dockerComposeFile": ["../../docker-compose.yml"],
+  "dockerComposeFile": [
+    "../../docker-compose.yml"
+  ],
   "service": "frontend",
   "workspaceFolder": "/workspace/frontend",
-  "forwardPorts": [3000],
+  "forwardPorts": [
+    3000
+  ],
   "postCreateCommand": "echo 'Nuxt Environment setup complete. Happy coding!'",
   "shutdownAction": "none",
   "remoteUser": "root",
