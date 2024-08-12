@@ -1,5 +1,5 @@
 # Stage 1: Build the base image
-FROM node:21-alpine as base
+FROM node:21-alpine AS base
 
 # Create a directory for the app code
 WORKDIR /workspace/frontend
