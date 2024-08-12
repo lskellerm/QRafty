@@ -1,6 +1,7 @@
 // @ts-check
 import withNuxt from './.nuxt/eslint.config.mjs';
-import prettier from 'eslint-plugin-prettier';
+import js from '@eslint/js';
+import prettier from 'eslint-config-prettier';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default withNuxt(
@@ -11,10 +12,9 @@ export default withNuxt(
     rules: {
       'no-console': 'off',
       semi: ['error', 'always']
-    },
-    plugins: {
-      prettier
     }
   },
+  js.configs.recommended,
+  prettier,
   eslintPluginPrettierRecommended
 );
