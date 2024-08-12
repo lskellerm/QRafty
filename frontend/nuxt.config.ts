@@ -6,8 +6,9 @@ export default defineNuxtConfig({
     strict: true,
     typeCheck: true
   },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint'],
   tailwindcss: {
     editorSupport: true
-  }
+  },
+  eslint: {}
 });
