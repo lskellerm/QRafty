@@ -4,7 +4,7 @@ export default <Partial<Config>>{
   theme: {
     fontFamily: {
       sans: ["Open sans", "sans-serif"],
-      heading: ["Roboto", "sans-serif"]
+      heading: ["Roboto", "sans-serif"],
     },
     extend: {
       colors: {
@@ -20,7 +20,7 @@ export default <Partial<Config>>{
           700: "#8779ec",
           800: "#afa6f2",
           900: "#d7d2f9",
-          950: "#ebe9fc"
+          950: "#ebe9fc",
         },
         background: {
           DEFAULT: "#FAFAFA",
@@ -34,7 +34,7 @@ export default <Partial<Config>>{
           700: "#b3b3b3",
           800: "#cccccc",
           900: "#e6e6e6",
-          950: "#f2f2f2"
+          950: "#f2f2f2",
         },
         primary: {
           DEFAULT: "#333333",
@@ -48,7 +48,7 @@ export default <Partial<Config>>{
           700: "#b3b3b3",
           800: "#cccccc",
           900: "#e6e6e6",
-          950: "#f2f2f2"
+          950: "#f2f2f2",
         },
         secondary: {
           DEFAULT: "#00C853",
@@ -62,7 +62,7 @@ export default <Partial<Config>>{
           700: "#66ffa6",
           800: "#99ffc4",
           900: "#ccffe1",
-          950: "#e5fff0"
+          950: "#e5fff0",
         },
         accent: {
           DEFAULT: "#009688",
@@ -76,9 +76,9 @@ export default <Partial<Config>>{
           700: "#66fff0",
           800: "#99fff5",
           900: "#ccfffa",
-          950: "#e5fffc"
-        }
-      }
-    }
-  }
+          950: "#e5fffc",
+        },
+      },
+    },
+  },
 };
