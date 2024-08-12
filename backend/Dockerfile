@@ -12,7 +12,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
 # Stage 2: Development Image
 FROM base as dev
 
-RUN apt install -y git
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy and install the Python Dependencies specific for development
 COPY dev-requirements.txt ./

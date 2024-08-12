@@ -1,11 +1,16 @@
 # Stage 1: Build the base image
-FROM node:21-alpine as base
+FROM node:21-alpine AS base
 
 # Create a directory for the app code
-WORKDIR /workspace
+WORKDIR /workspace/frontend
 
-# Install necessary package and pnpm dependency
-RUN apk add --no-cache build-base && npm install -g pnpm
+# Set up PNPM environment variables
+ENV PNPM_HOME=/workspace/frontend/.pnpm-home
+ENV PATH=$PNPM_HOME/bin:$PATH
+
+# Install necessary packages, pnpm, and confiugre pnpm 
+RUN apk add --no-cache build-base && \
+    npm install -g pnpm 
 
 # Copy package.json and pnpm-lock.yaml for dependency installation 
 COPY package.json pnpm-lock.yaml ./ 

@@ -1,0 +1,6 @@
+nod_modules/
+dist/
+coverage/
+.nuxt/ 
+pnpm-lock.yaml
+.pnpm-home/
