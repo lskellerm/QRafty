@@ -8,7 +8,13 @@ export default withNuxt(
   // Your custom configs here
   {
     files: ['**/*.js', '**/*.vue', '**/*.ts'],
-    ignores: ['.gitignore'],
+    ignores: [
+      '.gitignore',
+      'node_modules/',
+      'dist/',
+      '.nuxt/',
+      '.pnpm-home/, .pnpm-lock.yaml'
+    ],
     rules: {
       'no-console': 'off',
       semi: ['error', 'always']
