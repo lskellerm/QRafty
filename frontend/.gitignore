@@ -21,10 +21,11 @@ logs
 # Local env files
 .env
 .env.*
-!.env.example
+!.env.example               
 
-# pnpm store
-.pnpm-store
+# pnpm store and home directory
+.pnpm-home/
+.pnpm-store/
 
 managed_context/
 

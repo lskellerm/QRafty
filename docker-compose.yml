@@ -1,19 +1,19 @@
 version: '3'
 name: qrafty
 services:
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #     target: dev # User the 'dev" stage when targeting development environments
-  #   volumes:
-  #     - .:/workspace:cached
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - NODE_ENV=development
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: dev # User the 'dev" stage when targeting development environments
+    volumes:
+      - .:/workspace:cached
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
   backend:
     build:
       context: ./backend
@@ -63,17 +63,17 @@ services:
       - "5433:5432"
     expose:
       - "5432"
-  # pgadmin:
-  #   container_name: pgadmin
-  #   image: dpage/pgadmin4:latest
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
-  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - dev-db
-  #     - test-db
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dev-db
+      - test-db
 
 volumes:
   postgres_dev_data:

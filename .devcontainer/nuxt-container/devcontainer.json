@@ -1,27 +1,23 @@
 {
   "name": "Nuxt.js Dev Container",
-  "dockerComposeFile": [
-    "../../docker-compose.yml"
-  ],
+  "dockerComposeFile": ["../../docker-compose.yml"],
   "service": "frontend",
   "workspaceFolder": "/workspace/frontend",
-  "forwardPorts": [
-    3000
-  ],
-  "postCreateCommand": "echo 'Nuxt Environment setup complete. Happy coding!'",
+  "forwardPorts": [3000],
+  "postCreateCommand": "git config --global --add safe.directory /workspace && echo 'Nuxt Environment setup complete. Happy coding!'",
   "shutdownAction": "none",
   "remoteUser": "root",
   "customizations": {
     "vscode": {
       "extensions": [
         "Codium.codium",
-        "ms-azuretools.vscode-docker",
         "rangav.vscode-thunder-client",
         "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
         "Vue.volar",
         "github.vscode-github-actions",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker"
       ]
     }
   }
