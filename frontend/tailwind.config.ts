@@ -1,10 +1,26 @@
 import type { Config } from 'tailwindcss';
+import animate from 'tailwindcss-animate';
 
 export default <Partial<Config>>{
+  darkMode: ['class'],
+  content: [
+    './pages/**/*.{ts,tsx,vue}',
+    './components/**/*.{ts,tsx,vue}',
+    './app/**/*.{ts,tsx,vue}',
+    './src/**/*.{ts,tsx,vue}'
+  ],
+  prefix: '',
   theme: {
+    container: {
+      center: true,
+      padding: '2rem',
+      screens: {
+        '2xl': '1440px'
+      }
+    },
     fontFamily: {
       sans: ['Open sans', 'sans-serif'],
-      heading: ['Roboto', 'sans-serif']
+      heading: ['Poppins', 'sans-serif']
     },
     extend: {
       colors: {
@@ -22,7 +38,7 @@ export default <Partial<Config>>{
           900: '#d7d2f9',
           950: '#ebe9fc'
         },
-        background: {
+        backgroundColor: {
           DEFAULT: '#FAFAFA',
           50: '#0d0d0d',
           100: '#1a1a1a',
@@ -36,7 +52,7 @@ export default <Partial<Config>>{
           900: '#e6e6e6',
           950: '#f2f2f2'
         },
-        primary: {
+        primaryColor: {
           DEFAULT: '#333333',
           50: '#0d0d0d',
           100: '#1a1a1a',
@@ -50,7 +66,7 @@ export default <Partial<Config>>{
           900: '#e6e6e6',
           950: '#f2f2f2'
         },
-        secondary: {
+        secondaryColor: {
           DEFAULT: '#00C853',
           50: '#001a0b',
           100: '#003315',
@@ -64,7 +80,7 @@ export default <Partial<Config>>{
           900: '#ccffe1',
           950: '#e5fff0'
         },
-        accent: {
+        accentColor: {
           DEFAULT: '#009688',
           50: '#001a17',
           100: '#00332e',
@@ -78,7 +94,22 @@ export default <Partial<Config>>{
           900: '#ccfffa',
           950: '#e5fffc'
         }
+      },
+      keyframes: {
+        'accordian-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' }
+        },
+        'accordian-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' }
+        }
+      },
+      animation: {
+        'accordian-down': 'accordian-down 0.3s ease-out',
+        'accordian-up': 'accordian-up 0.3s ease-out'
       }
     }
-  }
+  },
+  plugins: [animate]
 };
