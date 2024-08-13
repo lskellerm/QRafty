@@ -8,9 +8,21 @@ export default defineNuxtConfig({
     strict: true,
     typeCheck: true
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint', 'shadcn-nuxt'],
   tailwindcss: {
     editorSupport: true
   },
-  eslint: {}
+  eslint: {},
+  shadcn: {
+    /**
+     * Prefix for all the imported components
+     */
+    prefix: '',
+
+    /**
+     * Directory that the components live in
+     * @default "./components/ui"
+     */
+    componentDir: './components/ui'
+  }
 });
