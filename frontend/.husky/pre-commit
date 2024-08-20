@@ -1,2 +1,13 @@
-cd frontend
-pnpm lint-staged
+#!/bin/sh
+
+# Get the list of staged files to be committed
+FILES=$(git diff --cached --name-only)
+
+# Check to see if any of the files are in the frontend directory, if so proceed with the lint-staged command
+# This ensures that this part of the pre-commit hook only runs for changes in the frontend directory
+if echo "$FILES" | grep -q "^frontend/"; then
+  cd frontend
+  pnpm lint-staged
+else
+  echo "Skipping this portion of the pre-commit hook, since it is only meant to run for changes in the frontend directory."
+fi
