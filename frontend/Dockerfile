@@ -16,7 +16,7 @@ RUN apk add --no-cache build-base && \
 COPY package.json pnpm-lock.yaml ./ 
 
 # Stage 2: Development
-FROM base as dev
+FROM base AS dev
 
 #  Install all dependencies (including dev) and git
 RUN apk add git && pnpm install
@@ -32,7 +32,7 @@ EXPOSE 3000
 ENTRYPOINT [ "tail", "-f", "/dev/null"]
 
 # Stage 3: Production
-FROM base as prod
+FROM base AS prod
 
 # Install only production dependencies
 RUN pnpm install --prod
