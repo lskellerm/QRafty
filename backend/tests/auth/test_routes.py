@@ -334,3 +334,71 @@ class TestRegistration:
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.json()["detail"] == "Username already exists"
+
+    async def test_username_too_short(
+        self, client: AsyncClient, base_registration_payload: Dict[str, str]
+    ) -> None:
+        """Test the registration endpoint when the username is too short, less than 2 characters"""
+        print("Testing the registration endpoint with a username that is too short")
+        base_registration_payload["username"] = "a"
+        response: Response = await client.post(
+            "/auth/register",
+            json=base_registration_payload,
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert (
+            response.json()["detail"][0]["msg"]
+            == "String should have at least 2 characters"
+        )
+        print("Test passed successfully!")
+
+    async def test_username_too_long(
+        self, client: AsyncClient, base_registration_payload: Dict[str, str]
+    ) -> None:
+        """Test the registration endpoint when the username is too long, more than 30 characters"""
+        print("Testing the registration endpoint with a username that is too long")
+        base_registration_payload["username"] = "a" * 31
+        response: Response = await client.post(
+            "/auth/register",
+            json=base_registration_payload,
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert (
+            response.json()["detail"][0]["msg"]
+            == "String should have at most 30 characters"
+        )
+        print("Test passed successfully!")
+
+    async def test_name_too_short(
+        self, client: AsyncClient, base_registration_payload: Dict[str, str]
+    ) -> None:
+        """Test the registration endpoint when the name is too short, less than 2 characters"""
+        print("Testing the registration endpoint with a name that is too short")
+        base_registration_payload["name"] = "a"
+        response: Response = await client.post(
+            "/auth/register",
+            json=base_registration_payload,
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert (
+            response.json()["detail"][0]["msg"]
+            == "String should have at least 2 characters"
+        )
+        print("Test passed successfully!")
+
+    async def test_name_too_long(
+        self, client: AsyncClient, base_registration_payload: Dict[str, str]
+    ) -> None:
+        """Test the registration endpoint when the name is too long, more than 30 characters"""
+        print("Testing the registration endpoint with a name that is too long")
+        base_registration_payload["name"] = "a" * 31
+        response: Response = await client.post(
+            "/auth/register",
+            json=base_registration_payload,
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert (
+            response.json()["detail"][0]["msg"]
+            == "String should have at most 30 characters"
+        )
+        print("Test passed successfully!")

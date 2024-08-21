@@ -26,8 +26,12 @@ class UserCreate(schemas.BaseUserCreate):
         schemas (BaseUserCreate): FastAPI_Users BaseUserCreate Pydantic model provided as a mixin
     """
 
-    name: str = Field(..., description="Name of the User being created", max_length=30)
-    username: str = Field(..., description="User's display name", max_length=30)
+    name: str = Field(
+        ..., description="Name of the User being created", min_length=2, max_length=30
+    )
+    username: str = Field(
+        ..., description="User's display name", min_length=2, max_length=30
+    )
 
 
 class UserUpdate(schemas.BaseUserUpdate):
@@ -39,5 +43,5 @@ class UserUpdate(schemas.BaseUserUpdate):
     """
 
     name: str | None = Field(
-        ..., description="Name of the User being updated", max_length=30
+        ..., description="Name of the User being updated", min_length=2, max_length=30
     )
