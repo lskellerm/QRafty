@@ -12,7 +12,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
     'shadcn-nuxt',
-    '@nuxt/image'
+    '@nuxt/image',
+    '@nuxt/icon'
   ],
   tailwindcss: {
     editorSupport: true
