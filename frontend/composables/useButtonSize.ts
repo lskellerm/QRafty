@@ -16,8 +16,12 @@ export function useButtonSize() {
   // Check if the width is less than 768 pixels, denoting a mobile device
   const isMobile = computed<boolean>(() => width.value < 768);
 
+  // Check if the screen width is greater than 1440 pixels, denoting a desktop device
+  const isDesktop = computed<boolean>(() => width.value >= 1440);
+
+  // Determine the size of the button based on the screen width,
   const buttonSize = computed<ButtonVariants['size']>(() =>
-    isMobile.value ? 'xs' : 'md'
+    isMobile.value ? 'xs' : isDesktop.value ? 'lg' : 'md'
   );
 
   return { buttonSize };
