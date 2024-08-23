@@ -1,83 +1,127 @@
-<script lang="ts">
-import { useForm } from 'vee-validate';
-import { toTypedSchema } from '@vee-validate/zod';
-import * as z from 'zod';
-
-// Define the User Registration form schema using vee-validate/zod to integrate with Zod schema validation
-const formSchema = toTypedSchema(
-  z.object({
-    email: z.string().email(),
-    name: z.string().max(5),
-    username: z.string().max(8),
-    password: z.string().min(8)
-  })
-);
-
-// Create the User Registration form using vee-validate useForm composable
-const form = useForm({
-  validationSchema: formSchema
-});
-
-// eslint-disable-next-line
-const onSubmit = form.handleSubmit((values) => {
-  /**
-   * Submission handler for the User Registration form'
-   * @param {Object} values - The user submitted form values
-   */
-  console.log('Form Submitted!', values);
-  // TODO: Submit the form data to the serve using actual API call
-});
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <Card
-    class="flex flex-col px-10 py-5 justify-center items-center gap-5 self-stretch bg-backgroundColor border-backgroundColor-400/35"
+    class="flex flex-col px-9 py-2 justify-center items-center self-stretch bg-backgroundColor border-backgroundColor-400/35 lg:w-full"
   >
-    <CardHeader class="text-center">
-      <CardTitle>Create an account</CardTitle>
-      <CardDescription
-        >Create an account to get started creating your custom QR codes today
-        for free!</CardDescription
+    <CardHeader
+      class="flex flex-col justify-center items-center gap-1 text-center py-4"
+    >
+      <NuxtImg src="/img/logos/logo-form-img.svg" width="45" height="45" />
+      <CardTitle class="text-text font-heading text-2xl font-normal"
+        >Create an account</CardTitle
       >
+      <CardDescription class="text-primaryColor-400 font-sans text-xs"
+        >Create an account to get started creating your custom QR codes today
+        for free!
+      </CardDescription>
     </CardHeader>
+    <CardContent class="px-2 py-5 w-full">
+      <form
+        novalidate
+        class="flex flex-col justify-center items-center px-3 py-0 gap-4"
+      >
+        <FormField v-slot="{ componentField }" name="name">
+          <FormItem class="w-11/12">
+            <FormLabel class="font-sans text-text text-sm">Name</FormLabel>
+            <FormControl>
+              <Input
+                class="font-sans text-sm placeholder:text-slate-400"
+                type="text"
+                v-bind="componentField"
+                placeholder="John"
+              />
+            </FormControl>
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="username">
+          <FormItem class="w-11/12">
+            <FormLabel class="font-sans text-text text-sm">Username</FormLabel>
+            <FormControl>
+              <Input
+                class="font-sans text-sm placeholder:text-slate-400"
+                type="text"
+                v-bind="componentField"
+                placeholder="yourusername123"
+              />
+            </FormControl>
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="email">
+          <FormItem class="w-11/12">
+            <FormLabel class="font-sans text-text text-sm">Email</FormLabel>
+            <FormControl>
+              <div class="relative items-center w-full">
+                <Input
+                  class="font-sans text-sm pl-8 placeholder:text-slate-400"
+                  type="email"
+                  v-bind="componentField"
+                  placeholder="m@example.com"
+                />
+                <span class="absolute start-0 inset-y-0 flex items-center px-2">
+                  <Icon
+                    name="i-material-symbols-mail-outline"
+                    class="bg-slate-400"
+                    size="1.5rem"
+                  />
+                </span>
+              </div>
+            </FormControl>
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="password">
+          <FormItem class="mt-2 w-11/12">
+            <div class="flex justify-between items-center self-stretch">
+              <FormLabel class="font-sans text-text text-sm"
+                >Password</FormLabel
+              >
+              <div class="flex justify-center items-center gap-x-3">
+                <Icon
+                  name="i-material-symbols-visibility-off-rounded"
+                  size="1rem"
+                  class="bg-text"
+                />
+                <span class="text-text font-sans text-xs">Hide</span>
+              </div>
+            </div>
+            <FormControl>
+              <Input
+                class="font-sans text-sm placeholder:text-slate-400"
+                type="password"
+                v-bind="componentField"
+              />
+            </FormControl>
+          </FormItem>
+        </FormField>
+        <FormField
+          v-slot="{ componentField }"
+          name="agreeToTerms"
+          type="checkbox"
+        >
+          <FormItem class="flex items-center p-2 pr-0 self-stretch gap-2">
+            <FormControl>
+              <Checkbox
+                v-bind="componentField"
+                id="agreeToTerms"
+                class="text-primaryColor-400"
+              >
+              </Checkbox>
+            </FormControl>
+            <FormDescription class="text-text font-sans text-xs font-normal">
+              By creating an account, you agree to our
+              <NuxtLink to="/terms" class="underline"
+                >Terms and Conditions</NuxtLink
+              >
+            </FormDescription>
+          </FormItem>
+        </FormField>
+        <Button
+          type="submit"
+          size="md"
+          class="bg-secondaryColor w-11/12 rounded-3xl font-heading text-white"
+          >Create an account</Button
+        >
+      </form>
+    </CardContent>
   </Card>
-  <!-- <form @submit="onSubmit">
-    <FormField v-slot="{ nameField }" name="name">
-      <FormItem>
-        <FormLabel>Name</FormLabel>
-        <FormControl>
-          <Input type="text" v-bind="nameField" placeholder="John" />
-        </FormControl>
-      </FormItem>
-    </FormField>
-    <FormField v-slot="{ usernameField }" name="username">
-      <FormItem>
-        <FormLabel>Username</FormLabel>
-        <FormControl>
-          <Input
-            type="text"
-            v-bind="usernameField"
-            placeholder="yourusername123"
-          />
-        </FormControl>
-      </FormItem>
-    </FormField>
-    <FormField v-slot="{ emailField }" name="email">
-      <FormItem>
-        <FormLabel>Email</FormLabel>
-        <FormControl>
-          <Input type="email" v-bind="emailField" placeholder="m@example.com" />
-        </FormControl>
-      </FormItem>
-    </FormField>
-    <FormField v-slot="{ passwordField }" name="password">
-      <FormItem>
-        <FormLabel>Password</FormLabel>
-        <FormControl>
-          <Input type="password" v-bind="passwordField" />
-        </FormControl>
-      </FormItem>
-    </FormField>
-    <Button size="lg" class="bg-secondaryColor">Submit</Button>
-  </form> -->
 </template>

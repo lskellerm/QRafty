@@ -12,8 +12,6 @@ const { width } = useWindowSize();
 
 // Computed property to determine if the screen width is less than 768px, returns true if it is, false otherwise
 const isMobile = computed(() => width.value <= 768);
-
-console.log(isMobile.value, width.value);
 </script>
 
 <template>
