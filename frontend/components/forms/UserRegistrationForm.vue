@@ -37,33 +37,41 @@ const togglePasswordVisibility = () => {
       >
         <FormField v-slot="{ componentField }" name="name">
           <FormItem class="w-11/12">
-            <FormLabel class="font-sans text-text text-sm">Name</FormLabel>
+            <FormLabel for="name" class="font-sans text-text text-sm"
+              >Name</FormLabel
+            >
             <FormControl>
               <Input
                 class="font-sans text-sm placeholder:text-slate-400"
                 type="text"
                 v-bind="componentField"
                 placeholder="John"
+                name="name"
               />
             </FormControl>
           </FormItem>
         </FormField>
         <FormField v-slot="{ componentField }" name="username">
           <FormItem class="w-11/12">
-            <FormLabel class="font-sans text-text text-sm">Username</FormLabel>
+            <FormLabel for="username" class="font-sans text-text text-sm"
+              >Username</FormLabel
+            >
             <FormControl>
               <Input
                 class="font-sans text-sm placeholder:text-slate-400"
                 type="text"
                 v-bind="componentField"
                 placeholder="yourusername123"
+                name="username"
               />
             </FormControl>
           </FormItem>
         </FormField>
         <FormField v-slot="{ componentField }" name="email">
           <FormItem class="w-11/12">
-            <FormLabel class="font-sans text-text text-sm">Email</FormLabel>
+            <FormLabel for="email" class="font-sans text-text text-sm"
+              >Email</FormLabel
+            >
             <FormControl>
               <div class="relative items-center w-full">
                 <Input
@@ -71,6 +79,7 @@ const togglePasswordVisibility = () => {
                   type="email"
                   v-bind="componentField"
                   placeholder="m@example.com"
+                  name="email"
                 />
                 <span class="absolute start-0 inset-y-0 flex items-center px-2">
                   <Icon
@@ -86,7 +95,7 @@ const togglePasswordVisibility = () => {
         <FormField v-slot="{ componentField }" name="password">
           <FormItem class="mt-2 w-11/12">
             <div class="flex justify-between items-center self-stretch">
-              <FormLabel class="font-sans text-text text-sm"
+              <FormLabel for="password" class="font-sans text-text text-sm"
                 >Password</FormLabel
               >
               <div class="flex justify-center items-center gap-x-2">
@@ -112,6 +121,7 @@ const togglePasswordVisibility = () => {
                 class="font-sans text-sm placeholder:text-slate-400"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 v-bind="componentField"
+                name="password"
               />
             </FormControl>
           </FormItem>
@@ -129,6 +139,7 @@ const togglePasswordVisibility = () => {
                 v-bind="componentField"
                 id="agreeToTerms"
                 class="text-primaryColor-400 lg:mt-1"
+                name="agreeToTerms"
               >
               </Checkbox>
             </FormControl>
