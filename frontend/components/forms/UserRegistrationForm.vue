@@ -1,17 +1,31 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// Extract the button size based on the screen width using the useButtonSize composable
+const { buttonSize } = useButtonSize();
+
+// State to track the
+const isPasswordVisible = ref(false);
+
+const togglePasswordVisibility = () => {
+  /**
+   * Function which toggles the visibility of the password field
+   */
+  isPasswordVisible.value = !isPasswordVisible.value;
+};
+</script>
 
 <template>
   <Card
-    class="flex flex-col px-9 py-2 justify-center items-center self-stretch bg-backgroundColor border-backgroundColor-400/35 lg:w-full"
+    class="flex flex-col px-9 py-2 justify-center items-center self-stretch bg-backgroundColor border-backgroundColor-400/35"
   >
     <CardHeader
       class="flex flex-col justify-center items-center gap-1 text-center py-4"
     >
       <NuxtImg src="/img/logos/logo-form-img.svg" width="45" height="45" />
-      <CardTitle class="text-text font-heading text-2xl font-normal"
+      <CardTitle class="text-text font-heading text-2xl lg:text-3xl font-normal"
         >Create an account</CardTitle
       >
-      <CardDescription class="text-primaryColor-400 font-sans text-xs"
+      <CardDescription
+        class="text-primaryColor-400 font-sans text-xs lg:text-base lg:w-4/6"
         >Create an account to get started creating your custom QR codes today
         for free!
       </CardDescription>
@@ -75,19 +89,20 @@
               <FormLabel class="font-sans text-text text-sm"
                 >Password</FormLabel
               >
-              <div class="flex justify-center items-center gap-x-3">
+              <div class="flex justify-center items-center gap-x-2">
                 <Icon
                   name="i-material-symbols-visibility-off-rounded"
                   size="1rem"
                   class="bg-text"
+                  @click="togglePasswordVisibility"
                 />
-                <span class="text-text font-sans text-xs">Hide</span>
+                <span class="text-text font-sans text-sm">Hide</span>
               </div>
             </div>
             <FormControl>
               <Input
                 class="font-sans text-sm placeholder:text-slate-400"
-                type="password"
+                :type="isPasswordVisible ? 'text' : 'password'"
                 v-bind="componentField"
               />
             </FormControl>
@@ -98,7 +113,9 @@
           name="agreeToTerms"
           type="checkbox"
         >
-          <FormItem class="flex items-center p-2 pr-0 self-stretch gap-2">
+          <FormItem
+            class="flex items-center p-2 pr-0 self-stretch gap-2 lg:ml-4 3xl:ml-6"
+          >
             <FormControl>
               <Checkbox
                 v-bind="componentField"
@@ -117,7 +134,7 @@
         </FormField>
         <Button
           type="submit"
-          size="md"
+          :size="buttonSize"
           class="bg-secondaryColor w-11/12 rounded-3xl font-heading text-white"
           >Create an account</Button
         >

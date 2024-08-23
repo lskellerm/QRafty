@@ -15,12 +15,14 @@ const isMobile = computed(() => width.value <= 768);
 </script>
 
 <template>
-  <div>
-    <div class="flex-shrink-0 self-stretch">
+  <div
+    class="lg:flex lg:flex-row lg:items-center lg:w-full lg:gap-x-24 3xl:gap-x-96"
+  >
+    <div>
       <NuxtImg
         v-if="!isMobile"
         src="/img/heros/desktop-register-hero.svg"
-        sizes="100vw"
+        class="h-screen"
       />
       <NuxtImg
         v-if="isMobile"
@@ -28,7 +30,9 @@ const isMobile = computed(() => width.value <= 768);
         sizes="100vw"
       />
     </div>
-    <div class="flex flex-col items-center gap-11 shrink-0 py-10 px-5">
+    <div
+      class="flex flex-col items-center justify-center gap-11 lg:gap-16 py-10 px-5 lg:w-1/2 3xl:w-2/5"
+    >
       <AuthNav />
       <UserRegistrationForm />
     </div>
