@@ -23,6 +23,9 @@ export default <Partial<Config>>{
       heading: ['Poppins', 'sans-serif']
     },
     extend: {
+      screens: {
+        '3xl': '1850px'
+      },
       colors: {
         text: {
           DEFAULT: '#050315',
