@@ -90,12 +90,20 @@ const togglePasswordVisibility = () => {
                 >Password</FormLabel
               >
               <div class="flex justify-center items-center gap-x-2">
-                <Icon
-                  name="i-material-symbols-visibility-off-rounded"
-                  size="1rem"
-                  class="bg-text"
+                <Button
+                  variant="icon"
+                  size="icon"
+                  aria-label="Toggle password visibility"
+                  :aria-pressed="isPasswordVisible"
                   @click="togglePasswordVisibility"
-                />
+                >
+                  <Icon
+                    name="i-material-symbols-visibility-off-rounded"
+                    size="1rem"
+                    class="bg-text"
+                  />
+                </Button>
+
                 <span class="text-text font-sans text-sm">Hide</span>
               </div>
             </div>
