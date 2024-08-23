@@ -114,17 +114,19 @@ const togglePasswordVisibility = () => {
           type="checkbox"
         >
           <FormItem
-            class="flex items-center p-2 pr-0 self-stretch gap-2 lg:ml-4 3xl:ml-6"
+            class="flex items-center p-2 pr-0 self-stretch gap-2 lg:ml-6 3xl:ml-8"
           >
             <FormControl>
               <Checkbox
                 v-bind="componentField"
                 id="agreeToTerms"
-                class="text-primaryColor-400"
+                class="text-primaryColor-400 lg:mt-1"
               >
               </Checkbox>
             </FormControl>
-            <FormDescription class="text-text font-sans text-xs font-normal">
+            <FormDescription
+              class="text-text font-sans text-xs font-normal lg:text-sm"
+            >
               By creating an account, you agree to our
               <NuxtLink to="/terms" class="underline"
                 >Terms and Conditions</NuxtLink
