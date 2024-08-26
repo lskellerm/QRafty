@@ -16,6 +16,7 @@
     "prepare": "cd .. && husky frontend/.husky"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.8.2",
     "@nuxt/icon": "^1.4.10",
     "@nuxt/image": "^1.7.0",
     "@radix-icons/vue": "^1.0.0",

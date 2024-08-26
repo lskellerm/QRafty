@@ -13,7 +13,8 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     'shadcn-nuxt',
     '@nuxt/image',
-    '@nuxt/icon'
+    '@nuxt/icon',
+    '@formkit/auto-animate/nuxt'
   ],
   tailwindcss: {
     editorSupport: true
