@@ -26,7 +26,8 @@
         "eamodio.gitlens",
         "Cameron.vscode-pytest",
         "LittleFoxTeam.vscode-python-test-adapter",
-        "tommorris.mako"
+        "tommorris.mako",
+        "johnpapa.vscode-peacock"
       ]
     }
   }
