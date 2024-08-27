@@ -1,5 +1,5 @@
 # Pinned dependencies for production
-fastapi==0.112.1
+fastapi==0.112.2
 fastapi-cli==0.0.5
 fastapi-users==13.0.0
 fastapi-users-db-sqlalchemy==6.0.1

@@ -37,7 +37,7 @@ email-validator==2.1.1
     # via
     #   -r requirements.in
     #   fastapi-users
-fastapi==0.112.1
+fastapi==0.112.2
     # via
     #   -r requirements.in
     #   fastapi-users
@@ -61,7 +61,7 @@ httptools==0.6.1
     # via uvicorn
 httpx==0.27.0
     # via -r requirements.in
-idna==3.7
+idna==3.8
     # via
     #   anyio
     #   email-validator
@@ -99,7 +99,7 @@ python-multipart==0.0.9
     # via fastapi-users
 pyyaml==6.0.2
     # via uvicorn
-rich==13.7.1
+rich==13.8.0
     # via typer
 shellingham==1.5.4
     # via typer
@@ -114,7 +114,7 @@ sqlalchemy==2.0.32
     #   fastapi-users-db-sqlalchemy
 starlette==0.38.2
     # via fastapi
-typer==0.12.4
+typer==0.12.5
     # via fastapi-cli
 typing-extensions==4.12.2
     # via
