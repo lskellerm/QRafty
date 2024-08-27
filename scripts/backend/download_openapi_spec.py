@@ -38,7 +38,7 @@ async def download_openapi_spec(url: str, output_file: str | PathLike[str]) -> N
 
 async def main():
     # Set the URL of OpenAPI spec and output file path
-    url = "http://localhost:8000/openapi.jso        n"
+    url = "http://localhost:8000/openapi.json"
     output_path = "../../openapi.json"
 
     print(f"Downloading OpenAPI spec from {url} and saving it to {output_path}...")
