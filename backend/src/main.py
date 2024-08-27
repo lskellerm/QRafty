@@ -14,14 +14,6 @@ ENVIRONMENT = settings.ENVIRONMENT
 SHOW_DOCS_ENVIRONMENTS = settings.SHOW_DOCS_ENVIRONMENTS
 
 
-# Create dictionary for basic FastAPI configuration
-fastapi_config: dict[str, Any] = {
-    "title": "QRafty API",
-    "summary": "API to provide functionality for the QRafty Front-End application",
-    "description": "QRafty API helps to manage and create QR codes, allowing the user to create, edit and delete fully custom QR codes.",
-}
-
-
 def custom_generate_uniq_id(route: APIRoute) -> str:
     """
     Custom function to generate unique ids for each endpoint of the application.
@@ -35,6 +27,14 @@ def custom_generate_uniq_id(route: APIRoute) -> str:
         str: Unique string id for the endpoint
     """
     return f"{route.tags[0]}-{route.name}"
+
+
+# Create dictionary for basic FastAPI configuration
+fastapi_config: dict[str, Any] = {
+    "title": "QRafty API",
+    "summary": "API to provide functionality for the QRafty Front-End application",
+    "description": "QRafty API helps to manage and create QR codes, allowing the user to create, edit and delete fully custom QR codes.",
+}
 
 
 @asynccontextmanager
@@ -67,14 +67,3 @@ app = FastAPI(
 # Include the auth routers in the FastAPI application
 for router in auth_routers:
     app.include_router(router, prefix="/auth", tags=["auth"])
-
-
-@app.get("/")
-async def root():
-    """
-    Root endpoint of the FastAPI application
-
-    Returns:
-        dict: A simple dictionary
-    """
-    return {"message": "Hello World"}
