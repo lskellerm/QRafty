@@ -29,7 +29,7 @@ EXPOSE 3000
 
 # Start the development server
 # CMD ["pnpm", "dev"]
-ENTRYPOINT [ "tail", "-f", "/dev/null"]
+CMD [ "tail", "-f", "/dev/null"]
 
 # Stage 3: Production
 FROM base AS prod
