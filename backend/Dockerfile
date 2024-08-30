@@ -27,7 +27,7 @@ COPY . .
 EXPOSE 8000
 
 # Keeps the container running, used for keeping the container running for development
-ENTRYPOINT ["tail", "-f", "/dev/null"]    
+CMD ["tail", "-f", "/dev/null"]    
 
 # Stage 3: Production Image
 FROM base as prod
