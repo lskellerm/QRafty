@@ -4,3 +4,4 @@ coverage/
 .nuxt/ 
 pnpm-lock.yaml
 .pnpm-home/
+.vscode/
