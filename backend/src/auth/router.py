@@ -46,5 +46,9 @@ register_router.routes[0].responses[status.HTTP_400_BAD_REQUEST]["content"][  # 
     },
 }
 
+# Change the path operation name for the register endpoint, to better integrate with the OpenAPI spec client code generation
+register_router.routes[0].name = "register"  # type: ignore
+
+
 # Append all auth related routes to to the list of auth routers, used to then append them to the main FastAPI app routes
 auth_routers.append(register_router)
