@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.auth.router import auth_routers
 from src.config import settings
@@ -12,6 +13,11 @@ from src.config import settings
 #  Get current environment from settings, used to set visibility of OpenAPI docs
 ENVIRONMENT = settings.ENVIRONMENT
 SHOW_DOCS_ENVIRONMENTS = settings.SHOW_DOCS_ENVIRONMENTS
+
+# Get the app name and list of allowed origins from the app settings
+APP_NAME = settings.APP_NAME
+if settings.ALLOWED_ORIGINS:
+    origins = settings.ALLOWED_ORIGINS.split(",")
 
 
 def custom_generate_uniq_id(route: APIRoute) -> str:
@@ -62,6 +68,16 @@ app = FastAPI(
     lifespan=lifespan,
     generate_unique_id_function=custom_generate_uniq_id,
     **fastapi_config,
+)
+
+
+# Add the CORS middleware to the FastAPI application
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # type: ignore
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Include the auth routers in the FastAPI application

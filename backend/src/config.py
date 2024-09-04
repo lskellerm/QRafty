@@ -11,8 +11,8 @@ class Settings(BaseSettings):
     SECRET_KEY: SecretType
     ENVIRONMENT: str
     SHOW_DOCS_ENVIRONMENTS: tuple[str, str, str] = ("development", "staging", "testing")
-    app_name: str = "QRafty API"
-
+    APP_NAME: str = "QRafty API"
+    ALLOWED_ORIGINS: Optional[str] = None
     model_config = SettingsConfigDict(env_file=".env")
 
 
