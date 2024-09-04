@@ -16,8 +16,6 @@ SHOW_DOCS_ENVIRONMENTS = settings.SHOW_DOCS_ENVIRONMENTS
 
 # Get the app name and list of allowed origins from the app settings
 APP_NAME = settings.APP_NAME
-if settings.ALLOWED_ORIGINS:
-    origins = settings.ALLOWED_ORIGINS.split(",")
 
 
 def custom_generate_uniq_id(route: APIRoute) -> str:
@@ -71,14 +69,16 @@ app = FastAPI(
 )
 
 
-# Add the CORS middleware to the FastAPI application
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,  # type: ignore
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Add the CORS middleware to the FastAPI application, with the allowed origins from the settings if they are set
+if settings.ALLOWED_ORIGINS:
+    origins = settings.ALLOWED_ORIGINS.split(",")
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,  # type: ignore
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 # Include the auth routers in the FastAPI application
 for router in auth_routers:
