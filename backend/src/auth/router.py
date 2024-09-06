@@ -36,12 +36,25 @@ register_router.routes[0].responses[status.HTTP_400_BAD_REQUEST]["content"][  # 
 # Add a new response example for the case when the user already exists with the provided username
 register_router.routes[0].responses[status.HTTP_400_BAD_REQUEST]["content"][  # type: ignore
     "application/json"
-]["examples"]["your_custom_error_code"] = {
+]["examples"][AuthErrorCode.REGISTER_USERNAME_ALREADY_EXISTS] = {
     "summary": "A user with this username already exists.",
     "value": {
         "detail": {
             "code": AuthErrorCode.REGISTER_USERNAME_ALREADY_EXISTS,
-            "reason": "Username already exists",
+            "reason": "A user  with this username already exists, please choose another username",
+        }
+    },
+}
+
+# Add a new response example for the case when the user's password contains their email, username, or name
+register_router.routes[0].responses[status.HTTP_400_BAD_REQUEST]["content"][  # type: ignore
+    "application/json"
+]["examples"][AuthErrorCode.REGISTER_INVALID_PASSWORD_CONTAINS_USER_INFO] = {
+    "summary": "Password validation failed, contains user information",
+    "value": {
+        "detail": {
+            "code": AuthErrorCode.REGISTER_INVALID_PASSWORD_CONTAINS_USER_INFO,
+            "reason": "Password should not contain your email, username or name for security reasons",
         }
     },
 }

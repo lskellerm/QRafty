@@ -11,7 +11,7 @@ def base_registration_payload():
     return {
         "username": "testuser",
         "email": "user@example.com",
-        "password": "TestPassword1!",
+        "password": "QRafty123!",
         "name": "Test User",
     }
 

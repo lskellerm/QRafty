@@ -157,6 +157,8 @@ class TestRegistration:
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         print(response.json())
+        assert isinstance(response.json()["detail"], dict)
+        assert response.json()["detail"]["code"] == "REGISTER_INVALID_PASSWORD"
         assert response.json()["detail"]["reason"] == invalid_password_message
         print("Test passed successfully!")
 
@@ -176,6 +178,8 @@ class TestRegistration:
             json=base_registration_payload,
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert isinstance(response.json()["detail"], dict)
+        assert response.json()["detail"]["code"] == "REGISTER_INVALID_PASSWORD"
         assert response.json()["detail"]["reason"] == invalid_password_message
         print("Test passed successfully!")
 
@@ -195,6 +199,8 @@ class TestRegistration:
             json=base_registration_payload,
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert isinstance(response.json()["detail"], dict)
+        assert response.json()["detail"]["code"] == "REGISTER_INVALID_PASSWORD"
         assert response.json()["detail"]["reason"] == invalid_password_message
         print("Test passed successfully!")
 
@@ -214,6 +220,8 @@ class TestRegistration:
             json=base_registration_payload,
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert isinstance(response.json()["detail"], dict)
+        assert response.json()["detail"]["code"] == "REGISTER_INVALID_PASSWORD"
         assert response.json()["detail"]["reason"] == invalid_password_message
         print("Test passed successfully!")
 
@@ -333,7 +341,14 @@ class TestRegistration:
             json=base_registration_payload,
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.json()["detail"] == "Username already exists"
+        assert isinstance(response.json()["detail"], dict)
+        assert "code" in response.json()["detail"]
+        assert "reason" in response.json()["detail"]
+        assert response.json()["detail"]["code"] == "REGISTER_USERNAME_ALREADY_EXISTS"
+        assert (
+            response.json()["detail"]["reason"]
+            == "A user  with this username already exists, please register using a different username"
+        )
 
     async def test_username_too_short(
         self, client: AsyncClient, base_registration_payload: Dict[str, str]

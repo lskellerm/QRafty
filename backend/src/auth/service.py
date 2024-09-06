@@ -5,13 +5,17 @@ import re
 from typing import Annotated, Union, Optional
 
 from fastapi import HTTPException, Request
-from fastapi_users import BaseUserManager, UUIDIDMixin, InvalidPasswordException
-from fastapi_users import schemas  # imported for type hinting
-
+from fastapi_users import (
+    BaseUserManager,
+    UUIDIDMixin,
+    InvalidPasswordException,
+    schemas,
+)
 
 from src.auth.models import User
 from src.auth.schemas import UserCreate
 from src.auth.config import SECRET_KEY
+from src.auth.constants import AuthErrorCode
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
@@ -52,11 +56,20 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
                 reason="Password should be at least 8 characters long, contain at least one uppercase letter, one digit and one special character"
             )
 
+        # Check that the User's password does not contain significant parts of their email, username, or name after splitting at email domain, spaces, and username parts
+        disallowed_parts = [
+            user.email.split("@")[0],  # before the '@' in the email
+            *user.name.split(),  # splits the name into parts
+            *user.username.split(),  # assuming the username might contain separable parts
+        ]
+
         # Check that the User's password does not contain their email, username, or name
         if any(
-            keyword.lower() in password.lower()
-            for keyword in [user.email, user.username, user.name]
+            part.lower() in password.lower()
+            for part in disallowed_parts
+            if len(part) > 3
         ):
+            # Ensures we only consider parts greater than 3 characters to avoid common sequences like 'abc'
             raise InvalidPasswordException(
                 reason="Password should not contain your email, username or name for security reasons"
             )
@@ -82,7 +95,10 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         if existing_user:
             raise HTTPException(
                 status_code=400,
-                detail="Username already exists",
+                detail={
+                    "code": AuthErrorCode.REGISTER_USERNAME_ALREADY_EXISTS,
+                    "reason": "A user  with this username already exists, please register using a different username",
+                },
             )
 
         return await super().create(user_create, safe=safe, request=request)
