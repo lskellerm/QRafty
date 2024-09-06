@@ -3,6 +3,9 @@ import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
+  imports: {
+    dirs: ['./api']
+  },
   devtools: { enabled: true },
   typescript: {
     strict: true,
@@ -37,5 +40,10 @@ export default defineNuxtConfig({
       path: '~/components',
       pathPrefix: false
     }
-  ]
+  ],
+  runtimeConfig: {
+    public: {
+      apiBase: ''
+    }
+  }
 });
