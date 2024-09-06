@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { definePageMeta } from '#imports';
 import { useWindowSize } from '@vueuse/core';
 
 // Defined the page metadata for the Register page
