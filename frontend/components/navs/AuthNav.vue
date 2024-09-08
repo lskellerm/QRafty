@@ -9,7 +9,7 @@ const { buttonSize } = useButtonSize();
       <p class="font-sans text-xs lg:text-lg not-italic font-normal">
         Already have an account?
       </p>
-      <Button variant="default" :size="buttonSize">Log in </Button>
+      <Button variant="secondary" :size="buttonSize">Log in </Button>
     </div>
   </div>
 </template>
