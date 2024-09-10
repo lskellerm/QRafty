@@ -1,6 +1,35 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core';
 
+// Define the SEO meta tags for the Register Page
+useServerSeoMeta({
+  title: 'Sign up',
+  ogTitle: 'Sign up',
+  robots: 'index, follow',
+  description: 'Create an account to get started with QRafty',
+  ogDescription: 'Create an account to get started with QRafty',
+  ogImage: [
+    {
+      url: '/img/heros/desktop-register-hero.svg',
+      width: 1200,
+      height: 630,
+      alt: 'Hero image for the Register page'
+    },
+    {
+      url: '/img/heros/mobile-form-hero.svg',
+      width: 600,
+      height: 315,
+      alt: 'Hero image for the Register page'
+    },
+    {
+      url: '/img/favicon.ico',
+      width: 768,
+      height: 402,
+      alt: 'Favicon logo for the Register page'
+    }
+  ]
+});
+
 // Defined the page metadata for the Register page
 definePageMeta({
   layout: 'auth'
@@ -35,5 +64,6 @@ const isMobile = computed(() => width.value <= 768);
       <AuthNav />
       <UserRegistrationForm />
     </div>
+    <NuxtPage />
   </div>
 </template>
