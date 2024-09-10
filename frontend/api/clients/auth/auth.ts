@@ -18,25 +18,6 @@ export const getAuthRegisterUrl = () => {
   return `/auth/register`;
 };
 
-// export const authRegisterRegister = (
-//   userCreate: UserCreate,
-//   // eslint-disable-next-line
-//   options?: RequestInit
-// ): AsyncData<
-//   Promise<authRegisterRegisterResponse> | null,
-//   FetchError<HTTPValidationError | ValidationError> | null
-// > => {
-//   return useAPI<Promise<authRegisterRegisterResponse>>(
-//     getAuthRegisterRegisterUrl(),
-//     {
-//       ...options,
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify(userCreate)
-//     }
-//   );
-// };
-
 export const authRegister = (
   userCreate: UserCreate,
   // eslint-disable-next-line
