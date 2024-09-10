@@ -1,6 +1,5 @@
 from os import PathLike
 from anyio import run, open_file
-from anyio.streams.file import FileReadStream, FileWriteStream
 from httpx import AsyncClient, HTTPError
 
 
