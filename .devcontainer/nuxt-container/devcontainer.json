@@ -19,7 +19,9 @@
         "esbenp.prettier-vscode",
         "ms-azuretools.vscode-docker",
         "antfu.iconify",
-        "johnpapa.vscode-peacock"
+        "johnpapa.vscode-peacock",
+        "vitest.explorer",
+        "ms-playwright.playwright"
       ]
     }
   }

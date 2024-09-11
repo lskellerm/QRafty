@@ -17,7 +17,8 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@nuxt/image',
     '@nuxt/icon',
-    '@formkit/auto-animate/nuxt'
+    '@formkit/auto-animate/nuxt',
+    '@nuxt/test-utils/module'
   ],
   tailwindcss: {
     editorSupport: true
