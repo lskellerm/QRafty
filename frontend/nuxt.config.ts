@@ -45,5 +45,6 @@ export default defineNuxtConfig({
     public: {
       apiBase: ''
     }
-  }
+  },
+  css: ['~/assets/css/tailwind.css']
 });
