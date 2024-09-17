@@ -34,8 +34,7 @@ const { buttonSize } = useButtonSize();
 
 // Clear the registered state to prevent the user from accessing the page again
 onBeforeRouteLeave(() => {
-  const isRegistered = useState<boolean>('registered');
-  isRegistered.value = false;
+  clearNuxtState('registered');
 });
 </script>
 
