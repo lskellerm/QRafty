@@ -6,10 +6,10 @@ definePageMeta({
       Navigation guard to prevent the user from directly accessing the page,
       only allowing routing from the register page the first time the user registers
     */
-    function () {
+    function (from) {
       // Get the register state from the registered state
       const isRegistered = useState<boolean>('registered');
-      if (!isRegistered.value) {
+      if (!isRegistered.value && from.path !== '/register') {
         return navigateTo('/register');
       }
     }
