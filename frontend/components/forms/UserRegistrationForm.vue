@@ -5,9 +5,6 @@ import { vAutoAnimate } from '@formkit/auto-animate';
 import type { FetchError } from 'ofetch';
 import * as z from 'zod';
 
-// Create a reactive state to track the registration status across components and sign up worfklow
-const isRegistered = useState<boolean>('registered', () => false);
-
 // Regex pattern search for a password with at least 1 uppercase letter, 1 digit, 1 special character and a minimum length of 8 characters
 const PATTERN = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])(?!.*\s).{8,}$/;
 
@@ -99,16 +96,16 @@ const submitForm = handleSubmit(async (values) => {
    */
 
   // Create a new object to exclude agreeToTerms from payload
-  // const { agreeToTerms, ...submissionValues } = values; // eslint-disable-line no-unused-vars
+  const { agreeToTerms, ...submissionValues } = values; // eslint-disable-line no-unused-vars
 
   try {
-    const response = await authRegister(values);
+    const response = await authRegister(submissionValues);
     if (response.status === 201) {
       // Reset the form fields
       handleReset();
 
       // Redirect the user to the registration success page and set the registered state to true
-      isRegistered.value = true;
+      useState('registered').value = true;
       await navigateTo('/register/success');
     }
   } catch (error) {
