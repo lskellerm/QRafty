@@ -344,6 +344,7 @@ const togglePasswordVisibility = () => {
           >
           <Button
             v-else
+            id="loading-button"
             disabled
             type="submit"
             :size="buttonSize"
