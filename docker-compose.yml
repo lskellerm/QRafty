@@ -5,20 +5,19 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      target: dev # User the 'dev" stage when targeting development environments
+      target: dev # Use the 'dev" stage when targeting development environments builds
     volumes:
       - .:/workspace:cached
-    env_file:
-      - .env
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${ENVIRONMENT}
+      - NUXT_PUBLIC_API_BASE=${NUXT_PUBLIC_API_BASE}
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      target: dev # User the 'dev" stage when targeting development environments
+      target: dev # Use the 'dev" stage when targeting development environment builds
     volumes:
       - .:/workspace:cached
     ports:
@@ -26,20 +25,17 @@ services:
     depends_on:
       - dev-db
       - test-db
-    env_file:
-      - .env
     environment:
       - DEV_DATABASE_URL=${DEV_DATABASE_URL}
       - TEST_DATABASE_URL=${TEST_DATABASE_URL}
       - SECRET_KEY=${SECRET_KEY}
       - ENVIRONMENT=${ENVIRONMENT}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
 
   dev-db:
     image: postgres:latest
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
-    env_file:
-      - .env
     environment:
       - POSTGRES_USER=${POSTGRES_DEV_USER}
       - POSTGRES_PASSWORD=${POSTGRES_DEV_PASSWORD}
@@ -53,8 +49,6 @@ services:
     image: postgres:latest
     volumes:
       - postgres_test_data:/var/lib/postgresql/data
-    env_file:
-      - .env
     environment:
       - POSTGRES_USER=${POSTGRES_TEST_USER}
       - POSTGRES_PASSWORD=${POSTGRES_TEST_PASSWORD}
