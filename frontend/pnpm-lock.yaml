@@ -126,6 +126,9 @@ importers:
       vue-tsc:
         specifier: ^2.1.6
         version: 2.1.6(typescript@5.6.2)
+      wait-for-expect:
+        specifier: ^3.0.2
+        version: 3.0.2
 
 packages:
 
@@ -5791,6 +5794,9 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  wait-for-expect@3.0.2:
+    resolution: {integrity: sha512-cfS1+DZxuav1aBYbaO/kE06EOS8yRw7qOFoD3XtjTkYvCvh3zUvNST8DXK/nPaeqIzIv3P3kL3lRJn8iwOiSag==}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -12614,6 +12620,8 @@ snapshots:
       '@vue/shared': 3.5.7
     optionalDependencies:
       typescript: 5.6.2
+
+  wait-for-expect@3.0.2: {}
 
   webidl-conversions@3.0.1: {}
 
