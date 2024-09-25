@@ -21,7 +21,8 @@
         "antfu.iconify",
         "johnpapa.vscode-peacock",
         "vitest.explorer",
-        "ms-playwright.playwright"
+        "ms-playwright.playwright",
+        "YoavBls.pretty-ts-errors"
       ]
     }
   }
