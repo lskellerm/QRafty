@@ -94,10 +94,8 @@ const submitForm = handleSubmit(async (values) => {
    * Submission handler for the User Registration form, using the handleSubmit function from the Vee-validate useForm composable
    * @param {Object} values - The user submitted form values
    */
-
   // Create a new object to exclude agreeToTerms from payload
   const { agreeToTerms, ...submissionValues } = values; // eslint-disable-line no-unused-vars
-
   try {
     const response = await authRegister(submissionValues);
     if (response.status === 201) {
@@ -116,7 +114,7 @@ const submitForm = handleSubmit(async (values) => {
 
        Error types can be:
          - HTTPValidationError (Server validation error for missing required fields)
-         - ErrorModel (Server valid       ation error for user with existing email and/or username or invalid password format)
+         - ErrorModel (Server validation error for user with existing email and/or username or invalid password format)
     */
 
     // Check if it's a generic error response, denoting a server validation error against database constraints
@@ -199,6 +197,7 @@ const togglePasswordVisibility = () => {
       </CardHeader>
       <CardContent class="px-2 py-5 w-full">
         <form
+          id="user-registration-form"
           novalidate
           class="flex flex-col justify-center items-center px-3 py-0 gap-4"
           @submit="submitForm"
@@ -206,8 +205,8 @@ const togglePasswordVisibility = () => {
           <FormField v-slot="{ componentField }" name="name">
             <FormItem v-auto-animate class="w-11/12">
               <FormLabel for="name" class="font-sans text-text text-sm"
-                >Name
-              </FormLabel>
+                >Name</FormLabel
+              >
               <FormControl>
                 <Input
                   class="font-sans text-sm placeholder:text-slate-400"
@@ -302,15 +301,13 @@ const togglePasswordVisibility = () => {
           </FormField>
           <FormField
             v-slot="{ value, handleChange }"
-            v-auto-animate
             name="agreeToTerms"
             type="checkbox"
-          >
-            <FormItem
+            ><FormItem
               v-auto-animate
               class="flex flex-col items-start p-2 self-stretch gap-2 lg:ml-4 2xl:ml-6 3xl:ml-8"
             >
-              <div class="flex items-center pl-1 lg:pl-0">
+              <div class="flex items-center">
                 <FormControl>
                   <Checkbox
                     id="agreeToTerms"
@@ -336,6 +333,7 @@ const togglePasswordVisibility = () => {
           </FormField>
           <Button
             v-if="!isSubmitting"
+            id="submit-button"
             type="submit"
             :size="buttonSize"
             :disabled="isSubmitting"
