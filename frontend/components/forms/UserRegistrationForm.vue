@@ -94,6 +94,7 @@ const submitForm = handleSubmit(async (values) => {
    * Submission handler for the User Registration form, using the handleSubmit function from the Vee-validate useForm composable
    * @param {Object} values - The user submitted form values
    */
+
   // Create a new object to exclude agreeToTerms from payload
   const { agreeToTerms, ...submissionValues } = values; // eslint-disable-line no-unused-vars
   try {
@@ -200,7 +201,8 @@ const togglePasswordVisibility = () => {
           id="user-registration-form"
           novalidate
           class="flex flex-col justify-center items-center px-3 py-0 gap-4"
-          @submit="submitForm"
+          @submit.prevent="submitForm"
+          @keydown.enter="$event.preventDefault()"
         >
           <FormField v-slot="{ componentField }" name="name">
             <FormItem v-auto-animate class="w-11/12">
