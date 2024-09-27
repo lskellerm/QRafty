@@ -317,6 +317,7 @@ const togglePasswordVisibility = () => {
                     class="text-primaryColor-400 mr-1"
                     name="agreeToTerms"
                     :checked="value"
+                    @update:model-value="handleChange"
                     @update:checked="handleChange"
                   >
                   </Checkbox>
@@ -340,6 +341,7 @@ const togglePasswordVisibility = () => {
             :size="buttonSize"
             :disabled="isSubmitting"
             class="bg-secondaryColor w-11/12 rounded-3xl font-heading text-white"
+            @keydown.enter="submitForm"
             >Create an account</Button
           >
           <Button
