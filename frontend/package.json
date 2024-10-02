@@ -64,10 +64,5 @@
       "eslint --fix",
       "prettier --write"
     ]
-  },
-  "pnpm": {
-    "overrides": {
-      "vite-plugin-checker": "0.8.0"
-    }
   }
 }
