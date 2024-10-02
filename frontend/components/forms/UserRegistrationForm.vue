@@ -94,7 +94,7 @@ const submitForm = handleSubmit(async (values) => {
    * Submission handler for the User Registration form, using the handleSubmit function from the Vee-validate useForm composable
    * @param {Object} values - The user submitted form values
    */
-  // Create a new object to exclude agreeToTerms from payload
+  /* v8 ignore next 62 */
   const { agreeToTerms, ...submissionValues } = values; // eslint-disable-line no-unused-vars
   try {
     const response = await authRegister(submissionValues);
