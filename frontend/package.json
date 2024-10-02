@@ -15,6 +15,7 @@
     "postinstall": "nuxt prepare",
     "prepare": "cd .. && husky frontend/.husky",
     "test": "vitest run",
+    "test:e2e": "exec playwright test",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
