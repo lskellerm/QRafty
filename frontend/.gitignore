@@ -30,3 +30,6 @@ logs
 managed_context/
 
 test_suite_analysis/
+
+# Test Coverage files
+coverage/
