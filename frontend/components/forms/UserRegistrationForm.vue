@@ -94,7 +94,6 @@ const submitForm = handleSubmit(async (values) => {
    * Submission handler for the User Registration form, using the handleSubmit function from the Vee-validate useForm composable
    * @param {Object} values - The user submitted form values
    */
-
   // Create a new object to exclude agreeToTerms from payload
   const { agreeToTerms, ...submissionValues } = values; // eslint-disable-line no-unused-vars
   try {
@@ -215,7 +214,6 @@ const togglePasswordVisibility = () => {
                   type="text"
                   v-bind="componentField"
                   placeholder="John"
-                  name="name"
                 />
               </FormControl>
               <FormMessage />
@@ -232,7 +230,6 @@ const togglePasswordVisibility = () => {
                   type="text"
                   v-bind="componentField"
                   placeholder="yourusername123"
-                  name="username"
                 />
               </FormControl>
               <FormMessage />
@@ -250,7 +247,6 @@ const togglePasswordVisibility = () => {
                     type="email"
                     v-bind="componentField"
                     placeholder="email@example.com"
-                    name="email"
                   />
                   <span
                     class="absolute start-0 inset-y-0 flex items-center px-2"
@@ -295,14 +291,13 @@ const togglePasswordVisibility = () => {
                   class="font-sans text-sm placeholder:text-slate-400"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   v-bind="componentField"
-                  name="password"
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
           <FormField
-            v-slot="{ value, handleChange }"
+            v-slot="{ componentField, value, handleChange }"
             name="agreeToTerms"
             type="checkbox"
             ><FormItem
@@ -315,8 +310,9 @@ const togglePasswordVisibility = () => {
                     id="agreeToTerms"
                     type="checkbox"
                     class="text-primaryColor-400 mr-1"
-                    name="agreeToTerms"
+                    v-bind="componentField"
                     :checked="value"
+                    :value="value"
                     @update:model-value="handleChange"
                     @update:checked="handleChange"
                   >
