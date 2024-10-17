@@ -32,6 +32,11 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - ENVIRONMENT=${ENVIRONMENT}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+    command: >
+      bash -c "export ENVIRONMENT=testing && \ 
+               cd backend && \ configs:
+               alembic upgrade head && \ 
+               tail -f /dev/null "
 
   dev-db:
     image: postgres:latest
