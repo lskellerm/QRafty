@@ -13,6 +13,7 @@ services:
     environment:
       - NODE_ENV=${ENVIRONMENT}
       - NUXT_PUBLIC_API_BASE=${NUXT_PUBLIC_API_BASE}
+
   backend:
     build:
       context: ./backend
@@ -47,8 +48,6 @@ services:
 
   test-db:
     image: postgres:latest
-    volumes:
-      - postgres_test_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${POSTGRES_TEST_USER}
       - POSTGRES_PASSWORD=${POSTGRES_TEST_PASSWORD}
@@ -57,6 +56,7 @@ services:
       - "5433:5432"
     expose:
       - "5432"
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4:latest
@@ -69,6 +69,14 @@ services:
       - dev-db
       - test-db
 
+  playwright:
+    container_name: playwright-server
+    image: mcr.microsoft.com/playwright:v1.48.0-noble
+    ports:
+      - "9222:9222"
+    command: [ "npx", "-y", "playwright@1.48.0", "run-server", "--port", "9222" ]
+
 volumes:
   postgres_dev_data:
-  postgres_test_data:
+
+
