@@ -34,8 +34,10 @@ async def async_db_engine() -> AsyncGenerator[AsyncEngine, None]:
     """
     # poolclass is set to NullPool to allow for multiple event loops (asyncio and pytest-asyncio) to share the same AsyncEngine
     # see https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html#using-multiple-asyncio-event-loops
-    engine = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool)
-    yield engine
+
+    if TEST_DATABASE_URL is not None:
+        engine = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool)
+        yield engine
 
 
 @pytest_asyncio.fixture(scope="function")  # type: ignore
@@ -49,7 +51,7 @@ async def async_db_session(
     Yields:
         Iterator[AsyncGenerator[AsyncSession, None]]: The Async database session to be used by each unit test, explcitly starting a new transaction and rolling it back after each test
     """
-    # Start an asnyc connection with the database engine
+    # Start an async connection with the database engine
     async with async_db_engine.connect() as connection:
         # Begin a new transaction for each test, which ensures that each test is isolated from the others
         transaction = await connection.begin()

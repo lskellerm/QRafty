@@ -1,5 +1,3 @@
-import os
-
 import asyncio
 from logging.config import fileConfig
 
@@ -15,13 +13,12 @@ from alembic import context
 from src.config import settings
 
 # Get the environment variable to determine which database to use at runtime
-ENV: str = os.getenv("ENVIRONMENT", "development")
+ENV: str = settings.ENVIRONMENT
 
 # Database URLs dependant on the environment, to be either development or testing
-DATABASE_URL: str = (
+DATABASE_URL = (
     settings.DEV_DATABASE_URL if ENV == "development" else settings.TEST_DATABASE_URL
 )
-
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -47,7 +44,9 @@ target_metadata: list[MetaData] = [User.metadata]
 # ... etc.
 
 # Set the database URL in the Alembic configuration based on the environment
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+
+if DATABASE_URL is not None:
+    config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 
 def run_migrations_offline() -> None:

@@ -4,8 +4,13 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
+# Get the environment variable to determine which database to use at runtime
+ENV = settings.ENVIRONMENT
 
-SQL_ALCHEMY_DATABASE_URL = settings.DEV_DATABASE_URL
+# Dynamically set the database URL based on the environment, allowing for configuration for various environments
+SQL_ALCHEMY_DATABASE_URL = (
+    settings.DEV_DATABASE_URL if ENV == "development" else settings.TEST_DATABASE_URL
+)
 
 
 class Base(DeclarativeBase):
@@ -20,12 +25,13 @@ class Base(DeclarativeBase):
 
 
 # Create the async engine and the async session maker, expire_on_commit is set to False to avoid session expiration
-engine = create_async_engine(SQL_ALCHEMY_DATABASE_URL)
-async_session_maker = async_sessionmaker(
-    engine,
-    expire_on_commit=False,
-    autocommit=False,  # autocommit is set to False to allow for fine-grained control over transactions
-)
+if SQL_ALCHEMY_DATABASE_URL is not None:
+    engine = create_async_engine(SQL_ALCHEMY_DATABASE_URL)
+    async_session_maker = async_sessionmaker(
+        engine,
+        expire_on_commit=False,
+        autocommit=False,  # autocommit is set to False to allow for fine-grained control over transactions
+    )
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
