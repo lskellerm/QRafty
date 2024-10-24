@@ -17,6 +17,8 @@ from src.auth.schemas import UserCreate
 from src.auth.config import SECRET_KEY
 from src.auth.constants import AuthErrorCode
 
+from src.testing.exceptions import UserDoesNotExist
+
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     """
@@ -104,3 +106,29 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         return await super().create(user_create, safe=safe, request=request)
 
     # TODO: Implement the remainder of custom User business logic for the UserManager
+
+    async def delete_by_username(
+        self, username: str, request: Request
+    ) -> None:  # pragma: no cover
+        """
+        Delete a user by their username
+
+        Performs a hard delete of the user from the database, removing their account.
+
+        Note that this method is intended for testing purposes only, and should not be used in production
+        as it does not perform any soft delete operations or maintain any data integrity constraints.
+
+
+        Args:
+            username (str): The username of the user to be deleted
+            request (Request): The request object for the current request
+
+        Raises:
+            UserDoesNotExist: If the user is not found
+        """
+        try:
+            # Execute the query, calling the delete_by_username method from the Custom SQLAlchemy User Database adapter
+            await self.user_db.delete_by_username(username)  # type: ignore
+        except UserDoesNotExist as e:
+            # Propagate the UserDoesNotExist exception back up to the controller
+            raise e

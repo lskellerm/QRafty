@@ -14,6 +14,7 @@ from sqlalchemy import select
 from src.database import get_async_session
 from src.auth.models import User
 from src.auth.service import UserManager
+from src.testing.exceptions import UserDoesNotExist
 
 
 class CustomSQLAlchemyUserDatabase(SQLAlchemyUserDatabase[User, UUID]):
@@ -38,6 +39,20 @@ class CustomSQLAlchemyUserDatabase(SQLAlchemyUserDatabase[User, UUID]):
         """
         statement: Select[tuple[User]] = select(User).where(User.username == username)
         return await self._get_user(statement)  # type: ignore
+
+    async def delete_by_username(self, username: str) -> None:  # pragma: no cover
+        """
+        Delete a user by their username
+
+        Args:
+            username (str): The username of the user to delete
+        """
+        user = await self.get_by_username(username)
+
+        if not user:
+            raise UserDoesNotExist(f"User with username {username} does not exist")
+
+        await self.delete(user)
 
 
 async def get_user_db(

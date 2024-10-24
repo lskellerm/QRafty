@@ -14,7 +14,7 @@ from src.config import settings
 ENVIRONMENT = settings.ENVIRONMENT
 SHOW_DOCS_ENVIRONMENTS = settings.SHOW_DOCS_ENVIRONMENTS
 
-# Get the app name and list of allowed origins from the app settings
+# Get the app name to be used in the FastAPI configuration
 APP_NAME = settings.APP_NAME
 
 
@@ -35,7 +35,7 @@ def custom_generate_uniq_id(route: APIRoute) -> str:
 
 # Create dictionary for basic FastAPI configuration
 fastapi_config: dict[str, Any] = {
-    "title": "QRafty API",
+    "title": APP_NAME,
     "summary": "API to provide functionality for the QRafty Front-End application",
     "description": "QRafty API helps to manage and create QR codes, allowing the user to create, edit and delete fully custom QR codes.",
 }
@@ -83,3 +83,10 @@ if settings.ALLOWED_ORIGINS:
 # Include the auth routers in the FastAPI application
 for router in auth_routers:
     app.include_router(router, prefix="/auth", tags=["auth"])
+
+
+# Conditionally include the testing routes if the environment is testing
+if settings.ENVIRONMENT == "testing":  # pragma: no cover
+    from src.testing.router import router as testing_router
+
+    app.include_router(testing_router)
