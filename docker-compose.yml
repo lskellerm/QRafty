@@ -1,4 +1,3 @@
-version: '3'
 name: qrafty
 services:
   frontend:
@@ -11,8 +10,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=${ENVIRONMENT}
       - NUXT_PUBLIC_API_BASE=${NUXT_PUBLIC_API_BASE}
+      - NUXT_PUBLIC_ENVIRONMENT=${NUXT_PUBLIC_ENVIRONMENT}
+      - NUXT_PUBLIC_PLAYWRIGHT_API_BASE_URL=${NUXT_PUBLIC_PLAYWRIGHT_API_BASE_URL}
+    profiles: [ development ]
 
   backend:
     build:
@@ -24,19 +25,37 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - dev-db
-      - test-db
+      dev-db:
+        condition: service_started
     environment:
       - DEV_DATABASE_URL=${DEV_DATABASE_URL}
       - TEST_DATABASE_URL=${TEST_DATABASE_URL}
       - SECRET_KEY=${SECRET_KEY}
-      - ENVIRONMENT=${ENVIRONMENT}
+      - ENVIRONMENT=testing
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
     command: >
-      bash -c "export ENVIRONMENT=testing && \ 
-               cd backend && \ configs:
-               alembic upgrade head && \ 
-               tail -f /dev/null "
+      bash -c "tail -f /dev/null "
+    profiles: [ development ]
+
+  db-migrations:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - .:/workspace:cached
+    depends_on:
+      test-db:
+        condition: service_healthy
+
+    environment:
+      - TEST_DATABASE_URL=${TEST_DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - ENVIRONMENT=testing
+    command: >
+      bash -c "export ENVIRONMENT=testing && cd backend && alembic upgrade head && echo Database setup completed successfully and, the backend is now ready for testing"
+
+    profiles: [ testing ]
 
   dev-db:
     image: postgres:latest
@@ -50,6 +69,12 @@ services:
       - "5432:5432"
     expose:
       - "5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_DEV_USER} -d ${POSTGRES_DEV_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ development ]
 
   test-db:
     image: postgres:latest
@@ -61,6 +86,12 @@ services:
       - "5433:5432"
     expose:
       - "5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_TEST_USER} -d ${POSTGRES_TEST_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles: [ testing ]
 
   pgadmin:
     container_name: pgadmin
@@ -72,7 +103,7 @@ services:
       - "8080:8080"
     depends_on:
       - dev-db
-      - test-db
+    profiles: [ development ]
 
   playwright:
     container_name: playwright-server
@@ -80,6 +111,7 @@ services:
     ports:
       - "9222:9222"
     command: [ "npx", "-y", "playwright@1.48.0", "run-server", "--port", "9222" ]
+    profiles: [ testing ]
 
 volumes:
   postgres_dev_data:
