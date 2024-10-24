@@ -39,7 +39,9 @@ const formSchema = toTypedSchema(
           message: 'Username must be less than 30 characters long'
         }),
       email: z
-        .string()
+        .string({
+          required_error: 'Email is required'
+        })
         .min(1, {
           message: 'Email is required'
         })
@@ -107,6 +109,7 @@ const submitForm = handleSubmit(async (values) => {
       await navigateTo('/register/success');
     }
   } catch (error) {
+    console.error(error);
     //  Assert the error response type to be a generic FetchError with a union type of HTTPValidationError or ErrorModel
     const errorResponse = error as FetchError<HTTPValidationError | ErrorModel>;
     /*
@@ -141,10 +144,9 @@ const submitForm = handleSubmit(async (values) => {
     }
     // Otherwise check for an HTTPValidationError response, denoting a server validation error for missing required fields
     else if (isHTTPValidationError(errorResponse.data)) {
-      const requieredValidationError =
-        errorResponse.data as HTTPValidationError;
+      const requiredValidationError = errorResponse.data as HTTPValidationError;
 
-      requieredValidationError.detail?.forEach((error) => {
+      requiredValidationError.detail?.forEach((error) => {
         if (error.loc[1] === 'name') {
           setFieldError('name', error.msg);
         }
@@ -270,6 +272,7 @@ const togglePasswordVisibility = () => {
                 >
                 <div class="flex justify-center items-center gap-x-0">
                   <Button
+                    data-testid="toggle-password-visibility"
                     type="button"
                     variant="icon"
                     size="icon"
@@ -288,6 +291,7 @@ const togglePasswordVisibility = () => {
               </div>
               <FormControl>
                 <Input
+                  data-testid="password"
                   class="font-sans text-sm placeholder:text-slate-400"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   v-bind="componentField"
@@ -333,6 +337,7 @@ const togglePasswordVisibility = () => {
           <Button
             v-if="!isSubmitting"
             id="submit-button"
+            data-testid="submit-button"
             type="submit"
             :size="buttonSize"
             :disabled="isSubmitting"
