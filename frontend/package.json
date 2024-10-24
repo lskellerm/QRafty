@@ -15,7 +15,10 @@
     "postinstall": "nuxt prepare",
     "prepare": "cd .. && husky frontend/.husky",
     "test": "vitest run",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "test:e2e": "exec playwright test",
+    "test:e2e:trace": "exec playwright test --trace on",
+    "e2e:report": "exec playwright show-report"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
