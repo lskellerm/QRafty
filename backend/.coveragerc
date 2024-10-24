@@ -3,3 +3,7 @@ fail_under = 95
 
 [run]
 branch= True
+omit = */testing/*
+
+[html]
+directory = tests/htmlcov
