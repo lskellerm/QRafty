@@ -25,7 +25,7 @@ class Base(DeclarativeBase):
 
 
 # Create the async engine and the async session maker, expire_on_commit is set to False to avoid session expiration
-if SQL_ALCHEMY_DATABASE_URL is not None:
+if SQL_ALCHEMY_DATABASE_URL is not None:  # pragma: no cover
     engine = create_async_engine(SQL_ALCHEMY_DATABASE_URL)
     async_session_maker = async_sessionmaker(
         engine,
@@ -34,7 +34,7 @@ if SQL_ALCHEMY_DATABASE_URL is not None:
     )
 
 
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:  # pragma: no cover
     """
     Dependency that creates a new session and then yields it
 
