@@ -188,6 +188,6 @@ test.describe('End-to-End User Registration Flow', () => {
       page.getByText('Congratulations, your account has been created!')
     ).toBeVisible();
 
-    await request.delete(`{apiBaseUrl}/testing/users/JD03123`);
+    await request.delete(`${apiBaseUrl}/testing/users/JD03123`);
   });
 });

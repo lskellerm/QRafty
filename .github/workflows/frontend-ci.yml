@@ -87,21 +87,21 @@ jobs:
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/heads/feature/')
       
       # Create PostgreSQL service container, needed for full E2E tests
-      # services:
-      #   postgres:
-      #       image: postgres:latest
-      #       env:
-      #           POSTGRES_USER: postgres
-      #           POSTGRES_PASSWORD: postgres
-      #           POSTGRES_DB: test_db
-      #       # Set health checks to wait until postgres has started
-      #       options: >-
-      #           --health-cmd pg_isready
-      #           --health-interval 10s
-      #           --health-timeout 5s
-      #           --health-retries 5
-      #       ports:
-      #           - 5432:5432
+      services:
+        postgres:
+            image: postgres:latest
+            env:
+                POSTGRES_USER: postgres
+                POSTGRES_PASSWORD: postgres
+                POSTGRES_DB: test_db
+            # Set health checks to wait until postgres has started
+            options: >-
+                --health-cmd pg_isready
+                --health-interval 10s
+                --health-timeout 5s
+                --health-retries 5
+            ports:
+                - 5432:5432
       defaults:
         run:
           working-directory: frontend/
@@ -143,13 +143,11 @@ jobs:
           run: | 
             docker run --name backend -d  \
               --env ENVIRONMENT=${{ env.ENVIRONMENT }} \
-              --env TEST_DATABASE_URL=${{ env.TEST_DATABASE_URL }} \
+            --env TEST_DATABASE_URL=${{ env.TEST_DATABASE_URL }} \
               --env SECRET_KEY=${{ env.SECRET_KEY }} \
               --env ALLOWED_ORIGINS=${{ env.ALLOWED_ORIGINS }} \
               -p 8000:8000 backend:latest
-        - name: Show logs for backend container
-          run: docker logs backend
-          
+            
         # Prepare the playwright e2e testing environment
         - name: Install Playwright Browsers
           run: pnpm playwright install --with-deps
@@ -160,7 +158,7 @@ jobs:
         - uses: actions/upload-artifact@v4
           if: ${{ !cancelled() }}
           with:
-            name: playwright-report
+            name: playwright-traces
             path: tests/e2e/test-results
             retention-days: 1
 

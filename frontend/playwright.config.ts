@@ -19,7 +19,7 @@ export default defineConfig<ConfigOptions>({
     [
       'html',
       {
-        outputFolder: 'tests/e2e/test-results',
+        outputFolder: 'tests/e2e/playwright-report',
         open: process.env.CI ? 'never' : 'always'
       }
     ]
