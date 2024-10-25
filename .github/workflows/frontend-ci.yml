@@ -49,12 +49,12 @@ jobs:
           - name: Checkout the code
             uses: actions/checkout@v4
             with:
-              sparse-checkout-cone-mode: # Ensures only the fronend files are checked out
+              sparse-checkout-cone-mode: true 
               sparse-checkout: |
                   frontend/
                   .github/workflows/frontend-ci.yml
 
-          - name: Install pnp
+          - name: Install pnpm
             uses: pnpm/action-setup@v4
             with:
               version: 9
