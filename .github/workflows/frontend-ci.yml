@@ -88,7 +88,7 @@ jobs:
     e2e-tests:
       runs-on: ubuntu-latest
       needs: build
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/heads/feature/')
       
       # Create PostgreSQL service container, needed for full E2E tests
       services:
