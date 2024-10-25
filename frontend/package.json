@@ -14,8 +14,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "prepare": "cd .. && husky frontend/.husky",
-    "test": "vitest run",
-    "coverage": "vitest run --coverage",
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest run --coverage",
     "test:e2e": "exec playwright test",
     "test:e2e:trace": "exec playwright test --trace on",
     "e2e:report": "exec playwright show-report"
