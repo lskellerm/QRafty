@@ -1,5 +1,9 @@
 import { test, expect } from '@nuxt/test-utils/playwright';
 
+const apiBaseUrl = process.env.CI
+  ? 'http://localhost:8000'
+  : 'http://backend:8000';
+
 test.describe('User Registration Flow UI Correctly displays feedback and funtions properly', () => {
   /**
    * The following test suite performs UI testing against the User Registration Flow
@@ -80,7 +84,7 @@ test.describe('End-to-End User Registration Flow', () => {
       username: 'JDoe123'
     };
 
-    await request.post('http://backend:8000/auth/register', {
+    await request.post(`${apiBaseUrl}/auth/register`, {
       data: user
     });
   });
@@ -90,7 +94,7 @@ test.describe('End-to-End User Registration Flow', () => {
     async ({ request }) => {
       // Delete the initial users created in the database, cleaning up the db state for the next test run
       const response = await request.delete(
-        'http://backend:8000/testing/users/JDoe123'
+        `${apiBaseUrl}/testing/users/JDoe123`
       );
 
       // Check if the response is successful or not found, denoting expected behavior
@@ -184,6 +188,6 @@ test.describe('End-to-End User Registration Flow', () => {
       page.getByText('Congratulations, your account has been created!')
     ).toBeVisible();
 
-    await request.delete('http://backend:8000/testing/users/JD03123');
+    await request.delete(`{apiBaseUrl}/testing/users/JD03123`);
   });
 });

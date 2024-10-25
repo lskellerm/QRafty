@@ -161,4 +161,10 @@ jobs:
             name: playwright-report
             path: tests/e2e/test-results
             retention-days: 1
+
+        - name: Clean up backend container
+          run: | 
+            docker stop backend || true
+            docker rm backend || true
+              
         
