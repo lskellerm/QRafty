@@ -34,3 +34,4 @@ test_suite_analysis/
 # Test Coverage & Report files
 coverage/
 test-results/
+playwright-report/
