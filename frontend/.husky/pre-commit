@@ -10,5 +10,7 @@ if echo "$FILES" | grep -q "^frontend/"; then
   cd frontend
   pnpm lint-staged
 else
+  # If no files in the frontend directory are staged, skip this portion of the pre-commit hook and allow the commit to proceed
   echo "Skipping this portion of the pre-commit hook, since it is only meant to run for changes in the frontend directory."
+  exit 0
 fi
