@@ -26,18 +26,23 @@ export default defineConfig<ConfigOptions>({
   ],
   use: {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    baseURL: 'http://frontend:3000',
+    baseURL: process.env.CI ? 'http://localhost:3000' : 'http://frontend:3000',
     headless: true,
     trace: 'on-first-retry',
     nuxt: {
       /* Nuxt configuration options */
       rootDir: fileURLToPath(new URL('.', import.meta.url)),
       browser: false,
-      host: 'http://frontend:3000'
+      host: process.env.CI ? 'http://localhost:3000' : 'http://frontend:3000'
     },
-    connectOptions: {
-      wsEndpoint: 'ws://playwright:9222'
-    }
+    // Use the ws endpoint for Playwright to connect to the browser when running locally to connect to the browser which is running in a docker container
+    ...(process.env.CI
+      ? {} // No wsEndpoint in CI, use default Chromium setup
+      : {
+          connectOptions: {
+            wsEndpoint: 'ws://playwright:9222'
+          }
+        })
   },
   expect: {
     timeout: 20000
@@ -50,7 +55,7 @@ export default defineConfig<ConfigOptions>({
   // Run a local dev server before starting the tests
   webServer: {
     command: 'pnpm dev',
-    url: 'http://frontend:3000',
+    url: process.env.CI ? 'http://localhost:3000' : 'http://frontend:3000',
     reuseExistingServer: !process.env.CI
   }
 });
