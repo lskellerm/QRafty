@@ -1,7 +1,7 @@
 # Stage 1: Base Image
 FROM python:3.12-slim AS base           
 
-WORKDIR /workspace
+WORKDIR /workspace/backend
 
 # Install build-essential for compiling necessary packages and install the Python Dependencies
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
