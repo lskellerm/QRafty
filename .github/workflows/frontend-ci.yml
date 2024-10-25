@@ -67,6 +67,7 @@ jobs:
           - name: Setup Node
             uses: actions/setup-node@v4
             with:
+              cache-dependency-path: frontend/pnpm-lock.yaml
               node-version: '21'
               cache: 'pnpm'
               
