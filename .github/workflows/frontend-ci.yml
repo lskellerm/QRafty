@@ -35,7 +35,6 @@ env:
     NUXT_PUBLIC_PLAYWRIGHT_API_BASE_URL: ${{ secrets.NUXT_PUBLIC_PLAYWRIGHT_API_BASE_URL }}
     TEST_DATABASE_URL: ${{secrets.TEST_DATABASE_URL}}
     SECRET_KEY: ${{ secrets.SECRET_KEY }}
-    ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
 
 jobs:
     # Build the application, lint, format, and run unit tests for all branches
@@ -150,12 +149,13 @@ jobs:
           run: docker build --target dev -t backend:latest -f ../backend/Dockerfile ../backend
         
         - name: Run the Backend Container
-          run: docker run --name backend -d \
-                -env ENVIRONMENT=${{env.ENVIRONMENT}} \
-                -env "ALLOWED_ORIGINS=${{ env.ALLOWED_ORIGINS }}" \
-                -env "TEST_DATABASE_URL=${{ env.TEST_DATABASE_URL }}" \
-                -env "SECRET_KEY=${{ env.SECRET_KEY }}" \
-                -p 8000:8000 backend:latest \
+          run: | 
+            docker run --name backend -d  \
+              --env ENVIRONMENT=${{ env.ENVIRONMENT }} \
+              --env TEST_DATABASE_URL=${{ env.TEST_DATABASE_URL }} \
+              --env SECRET_KEY=${{ env.SECRET_KEY }} \
+              --env ALLOWED_ORIGINS=${{ env.ALLOWED_ORIGINS }} \
+              -p 8000:8000 backend:latest
 
         - name: Clean up backend container
           if: always()
