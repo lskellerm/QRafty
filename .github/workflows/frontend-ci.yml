@@ -52,7 +52,7 @@ jobs:
               sparse-checkout: |
                   frontend
                   .github/workflows/frontend-ci.yml
-              sparse-checkout-cone-mode: false
+              sparse-checkout-cone-mode: true
 
           - name: Install pnpm
             uses: pnpm/action-setup@v4
@@ -62,7 +62,7 @@ jobs:
           - name: List and verify frontend directory contents
             run: | 
               pwd 
-              ls -la frontend
+              ls -la 
 
           - name: Setup Node
             uses: actions/setup-node@v4
