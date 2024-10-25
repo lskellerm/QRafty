@@ -1,0 +1,85 @@
+name: Frontend CI
+
+on:
+    push:
+        branches:
+            - main
+            - dev
+            - 'feature/*'
+        paths:
+            - '**.ts'
+            - '**.vue'
+            - '**.html'
+            - '.github/workflows/frontend-ci.yml'
+            - 'package.json'
+            - 'pnpm-lock.yaml'
+    pull_request:
+        branches:
+            - main
+            - dev
+            - 'feature/*'
+        paths:
+            - '**.ts'
+            - '**.vue'
+            - '**.html'
+            - '.github/workflows/frontend-ci.yml'
+            - 'package.json'
+            - 'pnpm-lock.yaml'
+permissions: 
+    contents: read
+
+env:
+    CI: true
+    ENVIRONMENT: testing
+    NUXT_PUBLIC_ENVIROMENT: ${{ secrets.NUXT_PUBLIC_ENVIRONMENT }}
+    NUXT_PUBLIC_PLAYWRIGHT_API_BASE_URL: ${{ secrets.NUXT_PUBLIC_PLAYWRIGHT_API_BASE_URL }}
+    TEST_DATABASE_URL: ${{secrets.TEST_DATABASE_URL}}
+    SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
+jobs:
+    # Build the application, lint, format, and run unit tests for all branches
+    build:
+      runs-on: ubuntu-latest
+
+      defaults:
+        run:
+          working-directory: frontend/
+        
+      steps:
+          - name: Checkout the code
+            uses: actions/checkout@v4
+            with:
+              sparse-checkout-cone-mode: # Ensures only the fronend files are checked out
+              sparse-checkout: |
+                  frontend/
+                  .github/workflows/frontend-ci.yml
+
+          - name: Install pnp
+            uses: pnpm/action-setup@v4
+            with:
+              version: 9
+
+          - name: Setup Node
+            uses: actions/setup-node@v4
+            with:
+              node-version: '21'
+              cache: 'pnpm'
+              
+          - name: Install dependencies
+            run: pnpm install --frozen-lockfile
+
+          - name: Format code with Prettier
+            run: pnpm prettier 
+
+          - name: Lint code with ESLint
+            run: pnpm lint
+            continue-on-error: false
+          
+          - name: Run Unit using Vitest with coverage
+            run: pnpm test
+            continue-on-error: false
+    
+    # E2E tests only run on main and dev branches 
+
+
+        
