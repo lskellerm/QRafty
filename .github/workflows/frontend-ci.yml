@@ -135,8 +135,8 @@ jobs:
           run: pnpm install --frozen-lockfile
         
         # Prepare the backend container for E2E tests
-        - name: Build backend container
-          run: docker build -t backend:latest -f ../backend/Dockerfile ../backend 
+        - name: Build backend container (dev stage)
+          run: docker build --target dev -t backend:latest -f ../backend/Dockerfile ../backend 
 
         - name: Run the Backend Container
           run: docker run -d \
