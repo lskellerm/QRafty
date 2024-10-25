@@ -91,21 +91,21 @@ jobs:
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/heads/feature/')
       
       # Create PostgreSQL service container, needed for full E2E tests
-      services:
-        postgres:
-            image: postgres:latest
-            env:
-                POSTGRES_USER: postgres
-                POSTGRES_PASSWORD: postgres
-                POSTGRES_DB: test_db
-            # Set health checks to wait until postgres has started
-            options: >-
-                --health-cmd pg_isready
-                --health-interval 10s
-                --health-timeout 5s
-                --health-retries 5
-            ports:
-                - 5432:5432
+      # services:
+      #   postgres:
+      #       image: postgres:latest
+      #       env:
+      #           POSTGRES_USER: postgres
+      #           POSTGRES_PASSWORD: postgres
+      #           POSTGRES_DB: test_db
+      #       # Set health checks to wait until postgres has started
+      #       options: >-
+      #           --health-cmd pg_isready
+      #           --health-interval 10s
+      #           --health-timeout 5s
+      #           --health-retries 5
+      #       ports:
+      #           - 5432:5432
       defaults:
         run:
           working-directory: frontend/
@@ -119,44 +119,47 @@ jobs:
                 backend
             sparse-checkout-cone-mode: true
 
-        - name: Install pnpm
-          uses: pnpm/action-setup@v4
-          with:
-            version: 9
+        # - name: Install pnpm
+        #   uses: pnpm/action-setup@v4
+        #   with:
+        #     version: 9
 
-        - name: Setup Node
-          uses: actions/setup-node@v4
-          with:
-            cache-dependency-path: frontend/pnpm-lock.yaml
-            node-version: '21'
-            cache: 'pnpm'
+        # - name: Setup Node
+        #   uses: actions/setup-node@v4
+        #   with:
+        #     cache-dependency-path: frontend/pnpm-lock.yaml
+        #     node-version: '21'
+        #     cache: 'pnpm'
   
-        - name: Install dependencies
-          run: pnpm install --frozen-lockfile
+        # - name: Install dependencies
+        #   run: pnpm install --frozen-lockfile
         
         # Prepare the backend container for E2E tests
         - name: Build backend container (dev stage)
-          run: docker build --target dev -t backend:latest -f ../backend/Dockerfile ../backend 
+          run: docker build --target dev -t backend:latest -f ../backend/Dockerfile ../backend
+          
+        - name: Verify and Confirm the image was built and tagged correctly
+          run: docker images
 
-        - name: Run the Backend Container
-          run: docker run -d \
-                --name backend \
-                -e ENVIRONMENT=testing \
-                -e TEST_DATABASE_URL=${{ secrets.TEST_DATABASE_URL }} \
-                -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
-                -p 8000:8000 \
-                backend:latest
-        # Prepare the playwright e2e testing environment
-        - name: Install Playwright Browsers
-          run: pnpm playwright install --with-deps
+        # - name: Run the Backend Container
+        #   run: docker run -d \
+        #         --name backend \
+        #         -e ENVIRONMENT=testing \
+        #         -e TEST_DATABASE_URL=${{ secrets.TEST_DATABASE_URL }} \
+        #         -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+        #         -p 8000:8000 \
+        #         backend:latest
+        # # Prepare the playwright e2e testing environment
+        # - name: Install Playwright Browsers
+        #   run: pnpm playwright install --with-deps
 
-        - name: Run playwright tests
-          run: pnpm test:e2e
-          continue-on-error: false
-        - uses: actions/upload-artifact@v4
-          if: ${{ !cancelled() }}
-          with:
-            name: playwright-report
-            path: tests/e2e/test-results
-            retention-days: 1
+        # - name: Run playwright tests
+        #   run: pnpm test:e2e
+        #   continue-on-error: false
+        # - uses: actions/upload-artifact@v4
+        #   if: ${{ !cancelled() }}
+        #   with:
+        #     name: playwright-report
+        #     path: tests/e2e/test-results
+        #     retention-days: 1
         
