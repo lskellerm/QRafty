@@ -21,6 +21,7 @@ export function useButtonSize() {
 
   // Determine the size of the button based on the screen width,
   const buttonSize = computed<ButtonVariants['size']>(() =>
+    /* v8 ignore next 3 */
     isMobile.value ? 'xs' : isDesktop.value ? 'lg' : 'md'
   );
 

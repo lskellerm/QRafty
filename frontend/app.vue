@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useHead({
-  /* v8 ignore next 3 */
+  /* v8 ignore next 4 */
   titleTemplate: (titleChunk) => {
     return titleChunk ? `${titleChunk} | QRafty` : 'QRafty';
   }

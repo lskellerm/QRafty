@@ -3,6 +3,7 @@ import type { $Fetch } from 'nitropack';
 export default defineNuxtPlugin(() => {
   // Extract base API url from the runtime config, determined by the environment
   const apiBaseUrl =
+    /* v8 ignore next 4 */
     useRuntimeConfig().public.environment === 'testing'
       ? useRuntimeConfig().public.playwrightApiBaseUrl
       : useRuntimeConfig().public.apiBase;

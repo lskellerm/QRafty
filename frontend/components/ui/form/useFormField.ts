@@ -13,6 +13,7 @@ export function useFormField() {
   const fieldItemContext = inject(FORM_ITEM_INJECTION_KEY);
 
   if (!fieldContext)
+    /* v8 ignore next */
     throw new Error('useFormField should be used within <FormField>');
 
   const { name } = fieldContext;

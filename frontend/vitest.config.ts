@@ -22,7 +22,8 @@ export default defineVitestConfig({
         'types/**',
         'api/index.ts',
         'composables/useAPI.ts',
-        'api/clients/**'
+        'api/clients/**',
+        'tests/e2e/**'
       ]
     }
   }
