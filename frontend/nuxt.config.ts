@@ -42,6 +42,14 @@ export default defineNuxtConfig({
       pathPrefix: false
     }
   ],
+  $development: {
+    runtimeConfig: {
+      public: {
+        environment: '',
+        playwrightApiBaseUrl: ''
+      }
+    }
+  },
   runtimeConfig: {
     public: {
       apiBase: ''
