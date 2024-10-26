@@ -39,46 +39,46 @@ env:
 
 jobs:
     # Build the application, lint, format, and run unit tests for all branches
-    # build:
-    #   runs-on: ubuntu-latest
+    build:
+      runs-on: ubuntu-latest
 
-    #   defaults:
-    #     run:
-    #       working-directory: frontend/
+      defaults:
+        run:
+          working-directory: frontend/
         
-    #   steps:
-    #       - name: Checkout the code
-    #         uses: actions/checkout@v4
-    #         with:
-    #           sparse-checkout: |
-    #               frontend
-    #           sparse-checkout-cone-mode: true
+      steps:
+          - name: Checkout the code
+            uses: actions/checkout@v4
+            with:
+              sparse-checkout: |
+                  frontend
+              sparse-checkout-cone-mode: true
 
-    #       - name: Install pnpm
-    #         uses: pnpm/action-setup@v4
-    #         with:
-    #           version: 9
+          - name: Install pnpm
+            uses: pnpm/action-setup@v4
+            with:
+              version: 9
 
-    #       - name: Setup Node
-    #         uses: actions/setup-node@v4
-    #         with:
-    #           cache-dependency-path: frontend/pnpm-lock.yaml
-    #           node-version: '21'
-    #           cache: 'pnpm'
+          - name: Setup Node
+            uses: actions/setup-node@v4
+            with:
+              cache-dependency-path: frontend/pnpm-lock.yaml
+              node-version: '21'
+              cache: 'pnpm'
               
-    #       - name: Install dependencies
-    #         run: pnpm install --frozen-lockfile
+          - name: Install dependencies
+            run: pnpm install --frozen-lockfile
 
-    #       - name: Format code with Prettier
-    #         run: pnpm format 
+          - name: Format code with Prettier
+            run: pnpm format 
 
-    #       - name: Lint code with ESLint
-    #         run: pnpm lint
-    #         continue-on-error: false
+          - name: Lint code with ESLint
+            run: pnpm lint
+            continue-on-error: false
           
-    #       - name: Run Unit using Vitest with coverage
-    #         run: pnpm test:unit:coverage
-    #         continue-on-error: false
+          - name: Run Unit using Vitest with coverage
+            run: pnpm test:unit:coverage
+            continue-on-error: false
     
     # E2E tests only run on main and dev branches 
     e2e-tests:
@@ -115,32 +115,31 @@ jobs:
                 backend
             sparse-checkout-cone-mode: true
 
-        # - name: Install pnpm
-        #   uses: pnpm/action-setup@v4
-        #   with:
-        #     version: 9
+        - name: Install pnpm
+          uses: pnpm/action-setup@v4
+          with:
+            version: 9
 
-        # - name: Setup Node
-        #   uses: actions/setup-node@v4
-        #   with:
-        #     cache-dependency-path: frontend/pnpm-lock.yaml
-        #     node-version: '21'
-        #     cache: 'pnpm'
+        - name: Setup Node
+          uses: actions/setup-node@v4
+          with:
+            cache-dependency-path: frontend/pnpm-lock.yaml
+            node-version: '21'
+            cache: 'pnpm'
   
-        # - name: Install dependencies
-        #   run: pnpm install --frozen-lockfile
+        - name: Install dependencies
+          run: pnpm install --frozen-lockfile
                   
-        # - name: Setup Docker Buildx
-        #   uses: docker/setup-buildx-action@v3.7.1
-        #   with:
-        #     cache-binary: true
-        #     cleanup: true
+        - name: Setup Docker Buildx
+          uses: docker/setup-buildx-action@v3.7.1
+          with:
+            cache-binary: true
+            cleanup: true
 
         - name: Build the Backend Container
           run: docker build --target dev -t backend:latest -f ../backend/Dockerfile ../backend
-        
 
-        - name: Get GitHub Network ID
+        - name: Get GitHub Network ID to attach backend container to this network
           id: network
           run: echo "GITHUB_NETWORK_ID=$(docker network ls --filter name=github_network_ -q)" >> $GITHUB_ENV
   
@@ -175,25 +174,26 @@ jobs:
               docker exec backend alembic upgrade head
 
         # Prepare the playwright e2e testing environment
-        # - name: Install Playwright Browsers
-        #   run: pnpm playwright install --with-deps
+        - name: Install Playwright Browsers
+          run: pnpm playwright install --with-deps
 
-        # - name: Run playwright tests
-        #   run: pnpm test:e2e
-        # - uses: actions/upload-artifact@v4
-        #   if: ${{ !cancelled() }}
-        #   with:
-        #     name: playwright-traces
-        #     path: tests/e2e/test-results
-        #     retention-days: 1
-        # - name: List directory contents
-        #   run: |
-        #     ls -la
-        #     ls -la tests/e2e
-        #     ls -la tests
+        - name: Run playwright tests
+          run: pnpm test:e2e
+        - uses: actions/upload-artifact@v4
+          if: ${{ !cancelled() }}
+          with:
+            name: playwright-traces
+            path: tests/e2e/test-results
+            retention-days: 1
+
+        - name: List directory contents
+          run: |
+            echo "Root Directory Contents:" && ls -la
+            echo "Tests Directory Contents:" && ls -la tests/
+            echo "e2e Directory Contents:" && ls -la tests/e2e
+
         - name: Clean up backend container
           run: | 
-            docker stop backend || true
-            docker rm backend || true
+            docker rm --force backend || true
               
         
