@@ -169,7 +169,6 @@ jobs:
           run: |
               echo "Backend Container Networks:" && docker network ls
               echo "Github Network info:" && docker network inspect $(docker network ls --filter name=github_network_ -q)
-
   
         # - name: Run Alembic DB migrations
         #   run: |
@@ -192,9 +191,9 @@ jobs:
         #     ls -la
         #     ls -la tests/e2e
         #     ls -la tests
-        # - name: Clean up backend container
-        #   run: | 
-        #     docker stop backend || true
-        #     docker rm backend || true
+        - name: Clean up backend container
+          run: | 
+            docker stop backend || true
+            docker rm backend || true
               
         
