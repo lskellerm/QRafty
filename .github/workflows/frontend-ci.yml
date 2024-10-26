@@ -158,10 +158,16 @@ jobs:
                 echo "Waiting for backend to be ready..."
                 sleep 2
               done
-              
-        - name: Run Alembic DB migrations
+        
+        - name: Display Info for Backend Container
           run: |
-              docker exec backend alembic upgrade head
+              docker ps 
+              docker network ls
+              docker container inspect backend | jq '.[0].NetworkSettings'
+        # - name: Run Alembic DB migrations
+        #   run: |
+        #       docker exec backend alembic upgrade head
+
         # Prepare the playwright e2e testing environment
         # - name: Install Playwright Browsers
         #   run: pnpm playwright install --with-deps
