@@ -34,7 +34,7 @@ env:
     ALLOWED_ORIGINS: ${{ secrets.ALLOWED_ORIGINS }}
     NUXT_PUBLIC_ENVIROMENT: ${{ secrets.NUXT_PUBLIC_ENVIRONMENT }}
     NUXT_PUBLIC_PLAYWRIGHT_API_BASE_URL: ${{ secrets.NUXT_PUBLIC_PLAYWRIGHT_API_BASE_URL }}
-    TEST_DATABASE_URL: ${{secrets.TEST_DATABASE_URL}}
+    TEST_DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/test_db
     SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
 jobs:
@@ -115,26 +115,26 @@ jobs:
                 backend
             sparse-checkout-cone-mode: true
 
-        - name: Install pnpm
-          uses: pnpm/action-setup@v4
-          with:
-            version: 9
+        # - name: Install pnpm
+        #   uses: pnpm/action-setup@v4
+        #   with:
+        #     version: 9
 
-        - name: Setup Node
-          uses: actions/setup-node@v4
-          with:
-            cache-dependency-path: frontend/pnpm-lock.yaml
-            node-version: '21'
-            cache: 'pnpm'
+        # - name: Setup Node
+        #   uses: actions/setup-node@v4
+        #   with:
+        #     cache-dependency-path: frontend/pnpm-lock.yaml
+        #     node-version: '21'
+        #     cache: 'pnpm'
   
-        - name: Install dependencies
-          run: pnpm install --frozen-lockfile
+        # - name: Install dependencies
+        #   run: pnpm install --frozen-lockfile
                   
-        - name: Setup Docker Buildx
-          uses: docker/setup-buildx-action@v3.7.1
-          with:
-            cache-binary: true
-            cleanup: true
+        # - name: Setup Docker Buildx
+        #   uses: docker/setup-buildx-action@v3.7.1
+        #   with:
+        #     cache-binary: true
+        #     cleanup: true
 
         - name: Build the Backend Container
           run: docker build --target dev -t backend:latest -f ../backend/Dockerfile ../backend
@@ -143,7 +143,7 @@ jobs:
           run: | 
             docker run --name backend -d  \
               --env ENVIRONMENT=${{ env.ENVIRONMENT }} \
-              --env TEST_DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/test_db \
+              --env TEST_DATABASE_URL=${{ env.TEST_DATABASE_URL }} \
               --env SECRET_KEY=${{ env.SECRET_KEY }} \
               --env ALLOWED_ORIGINS=${{ env.ALLOWED_ORIGINS }} \
               -p 8000:8000 backend:latest
