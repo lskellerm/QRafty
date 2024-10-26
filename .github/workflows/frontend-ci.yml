@@ -186,7 +186,7 @@ jobs:
           if: ${{  failure() && steps.e2e.conclusion == 'failure' }}
           with:
             name: playwright-traces
-            path: tests/e2e/test-results
+            path: ./tests/e2e/test-results
             retention-days: 1
 
         # - name: List directory contents
