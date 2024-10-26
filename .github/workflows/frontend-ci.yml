@@ -170,9 +170,9 @@ jobs:
               echo "Backend Container Networks:" && docker network ls
               echo "Github Network info:" && docker network inspect $(docker network ls --filter name=github_network_ -q)
   
-        # - name: Run Alembic DB migrations
-        #   run: |
-        #       docker exec backend alembic upgrade head
+        - name: Run Alembic DB migrations
+          run: |
+              docker exec backend alembic upgrade head
 
         # Prepare the playwright e2e testing environment
         # - name: Install Playwright Browsers
