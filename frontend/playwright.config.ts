@@ -12,7 +12,7 @@ export default defineConfig<ConfigOptions>({
   /* Fail the build in CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
   /* Limit the number of workers in CI environments, using default value in local */
   workers: process.env.CI ? 2 : undefined,
   reporter: [
@@ -25,10 +25,10 @@ export default defineConfig<ConfigOptions>({
     ]
   ],
   use: {
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     baseURL: process.env.CI ? 'http://localhost:3000' : 'http://frontend:3000',
     headless: true,
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
+    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     nuxt: {
       /* Nuxt configuration options */
       rootDir: fileURLToPath(new URL('.', import.meta.url)),

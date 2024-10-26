@@ -39,46 +39,46 @@ env:
 
 jobs:
     # Build the application, lint, format, and run unit tests for all branches
-    build:
-      runs-on: ubuntu-latest
+    # build:
+    #   runs-on: ubuntu-latest
 
-      defaults:
-        run:
-          working-directory: frontend/
+    #   defaults:
+    #     run:
+    #       working-directory: frontend/
         
-      steps:
-          - name: Checkout the code
-            uses: actions/checkout@v4
-            with:
-              sparse-checkout: |
-                  frontend
-              sparse-checkout-cone-mode: true
+    #   steps:
+    #       - name: Checkout the code
+    #         uses: actions/checkout@v4
+    #         with:
+    #           sparse-checkout: |
+    #               frontend
+    #           sparse-checkout-cone-mode: true
 
-          - name: Install pnpm
-            uses: pnpm/action-setup@v4
-            with:
-              version: 9
+    #       - name: Install pnpm
+    #         uses: pnpm/action-setup@v4
+    #         with:
+    #           version: 9
 
-          - name: Setup Node
-            uses: actions/setup-node@v4
-            with:
-              cache-dependency-path: frontend/pnpm-lock.yaml
-              node-version: '21'
-              cache: 'pnpm'
+    #       - name: Setup Node
+    #         uses: actions/setup-node@v4
+    #         with:
+    #           cache-dependency-path: frontend/pnpm-lock.yaml
+    #           node-version: '21'
+    #           cache: 'pnpm'
               
-          - name: Install dependencies
-            run: pnpm install --frozen-lockfile
+    #       - name: Install dependencies
+    #         run: pnpm install --frozen-lockfile
 
-          - name: Format code with Prettier
-            run: pnpm format 
+    #       - name: Format code with Prettier
+    #         run: pnpm format 
 
-          - name: Lint code with ESLint
-            run: pnpm lint
-            continue-on-error: false
+    #       - name: Lint code with ESLint
+    #         run: pnpm lint
+    #         continue-on-error: false
           
-          - name: Run Unit using Vitest with coverage
-            run: pnpm test:unit:coverage
-            continue-on-error: false
+    #       - name: Run Unit using Vitest with coverage
+    #         run: pnpm test:unit:coverage
+    #         continue-on-error: false
     
     # E2E tests only run on main and dev branches 
     e2e-tests:
@@ -87,21 +87,21 @@ jobs:
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/heads/feature/')
       
       # Create PostgreSQL service container, needed for full E2E tests
-      # services:
-      #   postgres:
-      #       image: postgres:latest
-      #       env:
-      #           POSTGRES_USER: postgres
-      #           POSTGRES_PASSWORD: postgres
-      #           POSTGRES_DB: test_db
-      #       # Set health checks to wait until postgres has started
-      #       options: >-
-      #           --health-cmd pg_isready
-      #           --health-interval 10s
-      #           --health-timeout 5s
-      #           --health-retries 5
-      #       ports:
-      #           - 5432:5432
+      services:
+        postgres:
+            image: postgres:latest
+            env:
+                POSTGRES_USER: postgres
+                POSTGRES_PASSWORD: postgres
+                POSTGRES_DB: test_db
+            # Set health checks to wait until postgres has started
+            options: >-
+                --health-cmd pg_isready
+                --health-interval 10s
+                --health-timeout 5s
+                --health-retries 5
+            ports:
+                - 5432:5432
       defaults:
         run:
           working-directory: frontend/
@@ -130,74 +130,74 @@ jobs:
         - name: Install dependencies
           run: pnpm install --frozen-lockfile
                   
-        # - name: Setup Docker Buildx
-        #   uses: docker/setup-buildx-action@v3.7.1
-        #   with:
-        #     cache-binary: true
-        #     cleanup: true
+        - name: Setup Docker Buildx
+          uses: docker/setup-buildx-action@v3.7.1
+          with:
+            cache-binary: true
+            cleanup: true
 
-        # - name: Build the Backend Container
-        #   run: docker build --target dev -t backend:latest -f ../backend/Dockerfile ../backend
+        - name: Build the Backend Container
+          run: docker build --target dev -t backend:latest -f ../backend/Dockerfile ../backend
 
-        # - name: Get GitHub Network ID to attach backend container to this network
-        #   id: network
-        #   run: echo "GITHUB_NETWORK_ID=$(docker network ls --filter name=github_network_ -q)" >> $GITHUB_ENV
+        - name: Get GitHub Network ID to attach backend container to this network
+          id: network
+          run: echo "GITHUB_NETWORK_ID=$(docker network ls --filter name=github_network_ -q)" >> $GITHUB_ENV
   
-        # - name: Run the Backend Container
-        #   run: | 
-        #     docker run --name backend -d  \
-        #       --network ${GITHUB_NETWORK_ID} \
-        #       --env ENVIRONMENT=${{ env.ENVIRONMENT }} \
-        #       --env TEST_DATABASE_URL=${{ env.TEST_DATABASE_URL }} \
-        #       --env SECRET_KEY=${{ env.SECRET_KEY }} \
-        #       --env ALLOWED_ORIGINS=${{ env.ALLOWED_ORIGINS }} \
-        #       -p 8000:8000 backend:latest
+        - name: Run the Backend Container
+          run: | 
+            docker run --name backend -d  \
+              --network ${GITHUB_NETWORK_ID} \
+              --env ENVIRONMENT=${{ env.ENVIRONMENT }} \
+              --env TEST_DATABASE_URL=${{ env.TEST_DATABASE_URL }} \
+              --env SECRET_KEY=${{ env.SECRET_KEY }} \
+              --env ALLOWED_ORIGINS=${{ env.ALLOWED_ORIGINS }} \
+              -p 8000:8000 backend:latest
         
-        # - name: Wait for backend to be ready
-        #   run: |
-        #       for i in {1..30}; do
-        #         if curl -s http://localhost:8000/openapi.json; then
-        #           echo "Backend is ready!"
-        #           break
-        #         fi
-        #         echo "Waiting for backend to be ready..."
-        #         sleep 2
-        #       done
+        - name: Wait for backend to be ready
+          run: |
+              for i in {1..30}; do
+                if curl -s http://localhost:8000/openapi.json; then
+                  echo "Backend is ready!"
+                  break
+                fi
+                echo "Waiting for backend to be ready..."
+                sleep 2
+              done
         
-        # - name: Display Info for Backend Container
-        #   run: |
-        #       echo "Backend Container Networks:" && docker network ls
-        #       echo "Github Network info:" && docker network inspect $(docker network ls --filter name=github_network_ -q)
+        - name: Display Info for Backend Container
+          run: |
+              echo "Backend Container Networks:" && docker network ls
+              echo "Github Network info:" && docker network inspect $(docker network ls --filter name=github_network_ -q)
   
-        # - name: Run Alembic DB migrations
-        #   run: |
-        #       docker exec backend alembic upgrade head
+        - name: Run Alembic DB migrations
+          run: |
+              docker exec backend alembic upgrade head
 
         # Prepare the playwright e2e testing environment
-        # - name: Install Playwright Browsers
-        #   run: pnpm playwright install --with-deps
+        - name: Install Playwright Browsers
+          run: pnpm playwright install --with-deps
 
-        # - name: Run playwright tests
-        #   id: e2e
-        #   run: pnpm test:e2e
+        - name: Run playwright tests
+          id: e2e
+          run: pnpm test:e2e
         
-        # - name: Upload Playwright artifacts
-        #   uses: actions/upload-artifact@v4
-        #   if: ${{  failure() && steps.e2e.conclusion == 'failure' }}
-        #   with:
-        #     name: playwright-traces
-        #     path: tests/e2e/test-results
-        #     retention-days: 1
+        - name: Upload Playwright artifacts
+          uses: actions/upload-artifact@v4
+          if: ${{  failure() && steps.e2e.conclusion == 'failure' }}
+          with:
+            name: playwright-traces
+            path: tests/e2e/test-results
+            retention-days: 1
 
-        - name: List directory contents
-          run: |
-            echo "Root Directory Contents:" && ls -la
-            echo "Tests Directory Contents:" && ls -la tests/
-            echo "e2e Directory Contents:" && ls -la tests/e2e
+        # - name: List directory contents
+        #   run: |
+        #     echo "Root Directory Contents:" && ls -la
+        #     echo "Tests Directory Contents:" && ls -la tests/
+        #     echo "e2e Directory Contents:" && ls -la tests/e2e
 
-        # - name: Clean up backend container
-        #   run: | 
-        #     docker stop backend || true
-        #     docker rm backend || true
+        - name: Clean up backend container
+          run: | 
+            docker stop backend || true
+            docker rm backend || true
               
         
