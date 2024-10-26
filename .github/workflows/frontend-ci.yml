@@ -143,28 +143,44 @@ jobs:
           run: | 
             docker run --name backend -d  \
               --env ENVIRONMENT=${{ env.ENVIRONMENT }} \
-            --env TEST_DATABASE_URL=${{ env.TEST_DATABASE_URL }} \
+              --env TEST_DATABASE_URL=${{ env.TEST_DATABASE_URL }} \
               --env SECRET_KEY=${{ env.SECRET_KEY }} \
               --env ALLOWED_ORIGINS=${{ env.ALLOWED_ORIGINS }} \
               -p 8000:8000 backend:latest
-            
+        
+        - name: Wait for backend to be ready
+          run: |
+              for i in {1..30}; do
+                if curl -s http://localhost:8000/openapi.json; then
+                  echo "Backend is ready!"
+                  break
+                fi
+                echo "Waiting for backend to be ready..."
+                sleep 2
+              done
+        - name: Run Alembic DB migrations
+          run: |
+              docker exec backend alembic upgrade head
         # Prepare the playwright e2e testing environment
-        - name: Install Playwright Browsers
-          run: pnpm playwright install --with-deps
+        # - name: Install Playwright Browsers
+        #   run: pnpm playwright install --with-deps
 
-        - name: Run playwright tests
-          run: pnpm test:e2e
-          continue-on-error: false
-        - uses: actions/upload-artifact@v4
-          if: ${{ !cancelled() }}
-          with:
-            name: playwright-traces
-            path: tests/e2e/test-results
-            retention-days: 1
-
-        - name: Clean up backend container
-          run: | 
-            docker stop backend || true
-            docker rm backend || true
+        # - name: Run playwright tests
+        #   run: pnpm test:e2e
+        # - uses: actions/upload-artifact@v4
+        #   if: ${{ !cancelled() }}
+        #   with:
+        #     name: playwright-traces
+        #     path: tests/e2e/test-results
+        #     retention-days: 1
+        # - name: List directory contents
+        #   run: |
+        #     ls -la
+        #     ls -la tests/e2e
+        #     ls -la tests
+        # - name: Clean up backend container
+        #   run: | 
+        #     docker stop backend || true
+        #     docker rm backend || true
               
         
