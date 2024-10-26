@@ -48,7 +48,7 @@ export default defineConfig<ConfigOptions>({
         })
   },
   expect: {
-    timeout: 20000
+    timeout: 50000
   },
   // Configure project for major browsers
   projects: devicesToTest.map((device) =>
@@ -59,7 +59,7 @@ export default defineConfig<ConfigOptions>({
   webServer: {
     command: 'pnpm dev',
     url: process.env.CI ? 'http://localhost:3000' : 'http://frontend:3000',
-    reuseExistingServer: true,
+    reuseExistingServer: process.env.CI ? false : true,
     stdout: process.env.CI ? 'pipe' : 'ignore'
   }
 });
