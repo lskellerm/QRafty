@@ -178,9 +178,12 @@ jobs:
           run: pnpm playwright install --with-deps
 
         - name: Run playwright tests
+          id: e2e
           run: pnpm test:e2e
-        - uses: actions/upload-artifact@v4
-          if: ${{ !cancelled() }}
+        
+        - name: Upload Playwright artifacts
+          uses: actions/upload-artifact@v4
+          if: ${{  failure() && steps.e2e.conclusion == 'failure' }}
           with:
             name: playwright-traces
             path: tests/e2e/test-results
@@ -194,6 +197,7 @@ jobs:
 
         - name: Clean up backend container
           run: | 
-            docker rm --force backend || true
+            docker stop backend || true
+            docker rm backend || true
               
         
