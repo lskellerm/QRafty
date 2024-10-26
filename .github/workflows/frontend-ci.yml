@@ -163,7 +163,12 @@ jobs:
           run: |
               docker ps 
               docker network ls
+              docker network inspect bridge
+              docker network inspect $(docker network ls --filter name=github_network_ -q)
               docker container inspect backend | jq '.[0].NetworkSettings'
+              docker container insepct postgres | jq '.[0].NetworkSettings'
+
+  
         # - name: Run Alembic DB migrations
         #   run: |
         #       docker exec backend alembic upgrade head
