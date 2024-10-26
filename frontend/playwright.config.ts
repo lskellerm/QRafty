@@ -12,7 +12,8 @@ export default defineConfig<ConfigOptions>({
   /* Fail the build in CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 1 : 0,
+  // retries: process.env.CI ? 1 : 0,
+  retries: 0,
   /* Limit the number of workers in CI environments, using default value in local */
   workers: process.env.CI ? 2 : undefined,
   reporter: [
@@ -37,7 +38,9 @@ export default defineConfig<ConfigOptions>({
     },
     // Use the ws endpoint for Playwright to connect to the browser when running locally to connect to the browser which is running in a docker container
     ...(process.env.CI
-      ? {} // No wsEndpoint in CI, use default Chromium setup
+      ? {
+          browserName: 'chromium'
+        } // No wsEndpoint in CI, use default Chromium setup
       : {
           connectOptions: {
             wsEndpoint: 'ws://playwright:9222'
@@ -56,6 +59,7 @@ export default defineConfig<ConfigOptions>({
   webServer: {
     command: 'pnpm dev',
     url: process.env.CI ? 'http://localhost:3000' : 'http://frontend:3000',
-    reuseExistingServer: !process.env.CI
+    reuseExistingServer: !process.env.CI,
+    stdout: 'pipe'
   }
 });
