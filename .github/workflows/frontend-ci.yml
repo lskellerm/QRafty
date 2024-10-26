@@ -143,7 +143,7 @@ jobs:
           run: | 
             docker run --name backend -d  \
               --env ENVIRONMENT=${{ env.ENVIRONMENT }} \
-              --env TEST_DATABASE_URL=postgresql+asyncpg://postgres-test-user:password@postgres:5432/qrafty_test_db \
+              --env TEST_DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/test_db \
               --env SECRET_KEY=${{ env.SECRET_KEY }} \
               --env ALLOWED_ORIGINS=${{ env.ALLOWED_ORIGINS }} \
               -p 8000:8000 backend:latest
