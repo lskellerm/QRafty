@@ -60,6 +60,9 @@ export default defineConfig<ConfigOptions>({
     command: 'pnpm dev',
     url: process.env.CI ? 'http://localhost:3000' : 'http://frontend:3000',
     reuseExistingServer: process.env.CI ? false : true,
-    stdout: process.env.CI ? 'pipe' : 'ignore'
+    stdout: process.env.CI ? 'pipe' : 'ignore',
+    env: {
+      DEBUG: 'pw:webserver'
+    }
   }
 });
